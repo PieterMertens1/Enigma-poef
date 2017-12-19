@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "713991347153",
+    "firebase_url": "https://enigma-poef.firebaseio.com",
+    "project_id": "enigma-poef",
+    "storage_bucket": "enigma-poef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713991347153:android:af898447f205a6d3",
+        "android_client_info": {
+          "package_name": "be.enigma.pieter.enigmapoef"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "713991347153-tqqpstju9fkfofv2e0gv3vtciejkbiat.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "be.enigma.pieter.enigmapoef",
+            "certificate_hash": "81b19b13c3c02f3163099c897d1e7a5e820fd7de"
+          }
+        },
+        {
+          "client_id": "713991347153-i5a6mes4ap828ntg8sdvdtb3t8tc5tb3.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "713991347153-02e0hh82l63lgumnnd60rd45dgid32l1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVN3oHoU_3qF8GqWtncdGWyhr3c14a9eI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
