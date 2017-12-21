@@ -69,4 +69,14 @@ public class Mainpage extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+
+
+
+    public void Test(View view) {
+
+        Intent intent = new Intent(this, Request.class);
+        startActivity(intent);
+    }
+
 }

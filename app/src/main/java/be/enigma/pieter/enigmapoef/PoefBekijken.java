@@ -53,9 +53,17 @@ public class PoefBekijken extends AppCompatActivity {
                 demoRef.child(mAuth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        String value = dataSnapshot.getValue(String.class);
+
                         TextView textView = findViewById(R.id.poefText);
-                        textView.setText(value);
+
+                        if (dataSnapshot.getValue(String.class) != null)
+                        {
+                            String value = dataSnapshot.getValue(String.class);
+                            textView.setText(value);
+                        }
+                        else {
+                            textView.setText("aiaiai" );
+                        }
                     }
 
                     @Override
