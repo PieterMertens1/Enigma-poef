@@ -1,21 +1,17 @@
 package be.enigma.pieter.enigmapoef;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,56 +49,27 @@ public class Request extends AppCompatActivity {
 
 
 
+    }
 
+    @Override
+    public void onStart() {
+
+        super.onStart();
 
     }
 
 
     public void poefToevoegen(View view) {
+
+        steekInDatabase();
+
+    }
+
+    private void steekInDatabase() {
         EditText bedragText = (EditText) findViewById(R.id.BedragText);
         String bedrag = bedragText.getText().toString();
         String reden = "test";
         String gebruiker;
-
-
-        // -------------------- code voor uitlezen database
-
-
-        final DatabaseReference demoRef = mDatabase.child("users");
-        Button fetch = findViewById(R.id.PoefButton);
-
-        fetch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                demoRef.child(mAuth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
-
-                    TextView textView = findViewById(R.id.poefText);
-
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String value = dataSnapshot.getValue(String.class);
-
-                        if (value != null)
-                        {
-                            textView.setText(value.toString());
-                        }
-                        else {
-                            textView.setText("aiaiai" );
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-            }
-
-        });
-        //------------------------------------------------------------------------
-
-
-
 
 
 
@@ -117,8 +84,6 @@ public class Request extends AppCompatActivity {
             gebruiker = "aiaiai";
         }
 
-
-
         gebruiker = encodeUserEmail(gebruiker);
 
         Map<String, Object> map = new HashMap<>();
@@ -131,23 +96,13 @@ public class Request extends AppCompatActivity {
         mDatabase.child("users").child(gebruiker).setValue(mijnpoef);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        TextView textView = findViewById(R.id.PoefText);
+        textView.setText(mijnpoef.getGebruiker() + " " + mijnpoef.getHoeveelheid() + " " + mijnpoef.getReden() + " " + mijnpoef.getTijd() );
     }
 
     static String encodeUserEmail(String userEmail) {
         return userEmail.replace(".", ",");
     }
+
 
 }

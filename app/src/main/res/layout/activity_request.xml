@@ -81,10 +81,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/poefText"
+        android:id="@+id/PoefText"
         android:layout_width="0dp"
         android:layout_height="124dp"
         android:layout_marginBottom="112dp"
+        android:text="test"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

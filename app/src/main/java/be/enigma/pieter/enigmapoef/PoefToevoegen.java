@@ -79,8 +79,8 @@ public class PoefToevoegen extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("timestamp", ServerValue.TIMESTAMP);
+        //Map<String, Object> map = new HashMap<>();
+        //map.put("timestamp", ServerValue.TIMESTAMP);
 
 
         Poef mijnpoef = new Poef(gebruiker, bedrag, reden);

@@ -20,7 +20,8 @@ public class Poef {
     }
 
     public Poef(String gebruiker, String hoeveelheid, String reden) {
-
+        // ik weet ni waarom ma dees had ik ni
+        this.gebruiker = gebruiker;
         this.hoeveelheid = hoeveelheid;
         this.reden = reden;
         this.tijd = ServerValue.TIMESTAMP;

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -16,53 +17,71 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import be.enigma.pieter.enigmapoef.models.Poef;
+
 public class PoefBekijken extends AppCompatActivity {
 
     private static final String TAG = "PoefBekijken =>";
-    private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poef_bekijken);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+
+        //[Checken welke user aangemeld is]
+        TextView textview = (TextView) findViewById(R.id.eigenaarText);
+
         if (GoogleSignIn.getLastSignedInAccount(this) != null){
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-            displayName(account.getDisplayName());
+            textview.setText(account.getEmail());
         }
         else if (FirebaseAuth.getInstance() != null) {
             mAuth = FirebaseAuth.getInstance();
-            mDatabase = FirebaseDatabase.getInstance().getReference();
-            displayName(mAuth.getCurrentUser().getEmail());
+            //mDatabase = FirebaseDatabase.getInstance().getReference();
+            textview.setText(mAuth.getCurrentUser().getEmail());
         }
 
 
-        final DatabaseReference demoRef = mDatabase.child("Poef").child("piejiem@gmail,com");
-        Button fetch = findViewById(R.id.btnFetch);
+
+    }
+
+    @Override
+    public void onStart() {
+
+        super.onStart();
+
+        // -------------------- code voor uitlezen database
+
+        /*final DatabaseReference demoRef = mDatabase.child("users");
+        Button fetch = findViewById(R.id.PoefButton);
 
         fetch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 demoRef.child(mAuth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    TextView textView = findViewById(R.id.PoefText);
+
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        Poef value = dataSnapshot.getValue(Poef.class);
 
-                        TextView textView = findViewById(R.id.poefText);
-
-                        if (dataSnapshot.getValue(String.class) != null)
-                        {
-                            String value = dataSnapshot.getValue(String.class);
-                            textView.setText(value);
-                        }
-                        else {
-                            textView.setText("aiaiai" );
+                        if (value != null) {
+                            textView.setText("gelukt");
+                        } else {
+                            textView.setText("aiaiai");
                         }
                     }
 
@@ -73,91 +92,35 @@ public class PoefBekijken extends AppCompatActivity {
                 });
             }
 
+        });*/
+        //------------------------------------------------------------------------
+
+    }
+
+    public void GetData(View view) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mDatabase = database.getReference("data/users");
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Poef post = dataSnapshot.getValue(Poef.class);
+                System.out.println(post.getReden());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
         });
-
-
-
-
-
-
-
-    }
-
-    private void displayName(String displayName) {
-        TextView textview = (TextView) findViewById(R.id.eigenaarText);
-
-        if (displayName != null)
-        {
-            textview.setText("Poef van: " + displayName);
-        }
-        else {
-            textview.setText("Poef van: aiaiai" );
-        }
     }
 
 
-    public void listen() {
-
-       String user = mAuth.getCurrentUser().getEmail();
-       user = encodeUserEmail(user);
 
 
-       mDatabase.addValueEventListener(new ValueEventListener() {
-
-           @Override
-           public void onDataChange(DataSnapshot dataSnapshot) {
-               Map<String, Object> td = (HashMap<String, Object>) dataSnapshot.getValue();
-
-               Collection<Object> values = td.values();
-
-               Log.d(TAG, "onDataChange: " + values.toString());
-
-               for (Object value : values) {
-                   Log.d(TAG, "onDataChange: " + value.toString());
-               }
-
-
-               //for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                   /*Poef post = postSnapshot.getValue(Poef.class);
-                   Log.e("Get Data", post.getGebruiker());
-                   Log.d(TAG, "onDataChange: " + post.toString());*/
-               //}
-
-           /*@Override
-           public void onDataChange(DataSnapshot snapshot) {
-
-               Log.e("Count " ,""+snapshot.getChildrenCount());
-               for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-            Poef post = postSnapshot.getValue(Poef.class);
-                   Log.e("Get Data", post.getGebruiker());
-               }
-           }*/
-
-           }
-
-           @Override
-           public void onCancelled(DatabaseError databaseError) {
-
-           }
-
-
-           //mDatabase.addChildEventListener((ChildEventListener) myQuery);
-
-
-           //String value = mDatabase.child("Poef").child(user).getKey();
-
-           //TextView textview = (TextView) findViewById(R.id.lijstText);
-           //textview.setText(value);
-       });
-   }
-
-
-
-    //mail encoderen omdat "." niet toegestaan is in firebase
     static String encodeUserEmail(String userEmail) {
         return userEmail.replace(".", ",");
     }
-
     static String decodeUserEmail(String userEmail) {
         return userEmail.replace(",", ".");
     }
