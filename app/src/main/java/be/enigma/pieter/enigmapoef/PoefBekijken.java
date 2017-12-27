@@ -1,29 +1,20 @@
 package be.enigma.pieter.enigmapoef;
 
-import android.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Connection;
+import java.util.ArrayList;
 
+import be.enigma.pieter.enigmapoef.database.PoefDAO;
 import be.enigma.pieter.enigmapoef.models.Poef;
 
 public class PoefBekijken extends AppCompatActivity {
@@ -62,57 +53,19 @@ public class PoefBekijken extends AppCompatActivity {
 
         super.onStart();
 
-        // -------------------- code voor uitlezen database
 
-        /*final DatabaseReference demoRef = mDatabase.child("users");
-        Button fetch = findViewById(R.id.PoefButton);
-
-        fetch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                demoRef.child(mAuth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
-
-                    TextView textView = findViewById(R.id.PoefText);
-
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Poef value = dataSnapshot.getValue(Poef.class);
-
-                        if (value != null) {
-                            textView.setText("gelukt");
-                        } else {
-                            textView.setText("aiaiai");
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-            }
-
-        });*/
-        //------------------------------------------------------------------------
 
     }
 
     public void GetData(View view) {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mDatabase = database.getReference("data/users");
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Poef post = dataSnapshot.getValue(Poef.class);
-                System.out.println(post.getReden());
-            }
+        PoefDAO poefDAO = new PoefDAO();
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });
+        ArrayList<Poef> test = poefDAO.geefAllePoef();
+
+
+        TextView poefText = findViewById(R.id.PoefText);
+        poefText.setText(test.toString());
     }
 
 

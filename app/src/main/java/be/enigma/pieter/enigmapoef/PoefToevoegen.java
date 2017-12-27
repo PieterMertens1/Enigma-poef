@@ -76,7 +76,7 @@ public class PoefToevoegen extends AppCompatActivity {
         gebruiker = encodeUserEmail(gebruiker);
 
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        //mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
         //Map<String, Object> map = new HashMap<>();
@@ -85,20 +85,13 @@ public class PoefToevoegen extends AppCompatActivity {
 
         Poef mijnpoef = new Poef(gebruiker, bedrag, reden);
 
-        mDatabase.child("Poef").child(gebruiker).push().setValue(mijnpoef);
-
-
-        //mDatabase.child("Poef").child(gebruiker).child("Tijdstip").setValue(tijd);
-        //mDatabase.child("Poef").child(gebruiker).child("Tijdstip").child(mijnpoef.getGebruiker()).setValue(mijnpoef);
-
-        //mDatabase.child("Poef").child(mijnpoef.getGebruiker()).child("Hoeveelheid").setValue(mijnpoef.getHoeveelheid());
-        //mDatabase.child("Poef").child(mijnpoef.getGebruiker()).child("Hoeveelheid").child("Reden").setValue(mijnpoef.getReden());
+        //mDatabase.child("Poef").child(gebruiker).push().setValue(mijnpoef);
 
 
 
 
-        //bedragText.setText("");
-        //redenText.setText("");
+        bedragText.setText("");
+        redenText.setText("");
 
     }
 
