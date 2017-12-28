@@ -65,8 +65,8 @@ public class Request extends AppCompatActivity {
     }
 
 
-    public void AddData(String newEntry) {
-        boolean insertData = mDatabaseHelper.addData(newEntry);
+    public void AddData(String gebruiker, String hoeveelheid, String reden, String tijd) {
+        boolean insertData = mDatabaseHelper.addData(gebruiker, hoeveelheid, reden, tijd);
 
         if (insertData) {
             System.out.print("Data succesfully inserted");
@@ -89,7 +89,7 @@ public class Request extends AppCompatActivity {
 
 
 
-    public void poefToevoegen(View view) {
+/*    public void poefToevoegen(View view) {
 
 
         TextView eigenaarText = findViewById(R.id.EigenaarText);
@@ -112,7 +112,7 @@ public class Request extends AppCompatActivity {
         //steekInDatabase();
 
 
-    }
+    }*/
 
 
 

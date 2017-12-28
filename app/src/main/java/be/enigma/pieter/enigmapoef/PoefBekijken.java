@@ -16,7 +16,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import be.enigma.pieter.enigmapoef.database.DatabaseHelper;
 import be.enigma.pieter.enigmapoef.database.PoefDAO;
@@ -31,7 +33,7 @@ public class PoefBekijken extends AppCompatActivity {
     DatabaseHelper mDatabaseHelper;
     private ListView mListView;
 
-
+    TextView textview;
 
 
     @Override
@@ -43,7 +45,7 @@ public class PoefBekijken extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         //[Checken welke user aangemeld is]
-        TextView textview = (TextView) findViewById(R.id.eigenaarText);
+        textview = (TextView) findViewById(R.id.eigenaarText);
 
         if (GoogleSignIn.getLastSignedInAccount(this) != null){
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
@@ -65,13 +67,23 @@ public class PoefBekijken extends AppCompatActivity {
     private void populateListview() {
         System.out.print(TAG + "populateListview displaying data in the listview");
 
-        Cursor data = mDatabaseHelper.getData();
+        Cursor data = mDatabaseHelper.getPoefByUser(textview.getText().toString());
          mListView= findViewById(R.id.mListView);
 
         ArrayList<String> listData = new ArrayList<>();
         while (data.moveToNext()) {
             //getstring => column 1 (zero based counting => column 1 = gebruiker)
-            listData.add(data.getString(1));
+
+            //listData.add(data.getString(1)); gebruiker
+            //listData.add(data.getString(2)); aantal
+            //listData.add(data.getString(3)); reden
+            //listData.add(data.getString(4)); tijd
+
+            String s = data.getString(4);
+            s = s.substring(0, Math.min(s.length(), 10));
+
+            String insertValue = s + ": €" + data.getString(2) + " " + data.getString(3);
+            listData.add(insertValue);
         }
 
         if (listData != new ArrayList<String>()) {
@@ -90,37 +102,6 @@ public class PoefBekijken extends AppCompatActivity {
 
 
     }
-
-    public void GetData(View view) {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //Deze code is om gegevens op te halen uit de mysql database maar de connectie wordt momenteel nog niet gemaakt
-/*        PoefDAO poefDAO = new PoefDAO();
-
-        ArrayList<Poef> test = poefDAO.geefAllePoef();
-
-
-        TextView poefText = findViewById(R.id.PoefText);
-        poefText.setText(test.toString());*/
-    }
-
-
-
 
     static String encodeUserEmail(String userEmail) {
         return userEmail.replace(".", ",");

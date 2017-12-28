@@ -2,6 +2,7 @@ package be.enigma.pieter.enigmapoef.models;
 
 import com.google.firebase.database.ServerValue;
 
+import java.sql.Timestamp;
 import java.util.Map;
 
 /**
@@ -13,7 +14,7 @@ public class Poef {
     private String gebruiker;
     private String hoeveelheid;
     private String reden;
-    private Map<String, String> tijd;
+    private String tijd;
 
 
     public Poef() {
@@ -51,11 +52,13 @@ public class Poef {
         this.reden = reden;
     }
 
-    public Map<String, String> getTijd() {
-        return ServerValue.TIMESTAMP;
+
+    public String getTijd() {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        return timestamp.toString();
     }
 
-    public void setTijd(Map<String, String> tijd) {
+    public void setTijd(String tijd) {
         this.tijd = tijd;
     }
 }
