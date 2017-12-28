@@ -1,11 +1,17 @@
 package be.enigma.pieter.enigmapoef;
 
 import android.content.DialogInterface;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -14,17 +20,22 @@ import android.widget.TextView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 
 import be.enigma.pieter.enigmapoef.database.DatabaseHelper;
 import be.enigma.pieter.enigmapoef.models.Poef;
+import com.google.zxing.Result;
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import static android.Manifest.permission.CAMERA;
 
-public class PoefToevoegen extends AppCompatActivity {
+public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
+    private static final String TAG = "PoefToevoegen => ";
     private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
 
     private DatabaseHelper mDatabaseHelper;
+
+    private static final int REQUEST_CAMERA = 1;
+    private ZXingScannerView mScannerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +59,9 @@ public class PoefToevoegen extends AppCompatActivity {
 
         mDatabaseHelper = new DatabaseHelper(this);
 
+        mScannerView = new ZXingScannerView(this);
+
+
     }
 
 
@@ -67,6 +81,10 @@ public class PoefToevoegen extends AppCompatActivity {
         Poef mijnPoefPoef = new Poef(gebruiker, hoeveelheid, reden);
         final String tijd = mijnPoefPoef.getTijd();
 
+        final Intent intent = new Intent(this, toQr.class);
+
+
+
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         TextView textView = new TextView(this);
@@ -82,6 +100,13 @@ public class PoefToevoegen extends AppCompatActivity {
 
                 // Do something with value!
                 AddData(gebruiker, hoeveelheid, reden, tijd);
+
+                intent.putExtra("Gebruiker", gebruiker);
+                intent.putExtra("Hoeveelheid", hoeveelheid);
+                intent.putExtra("Reden", reden);
+                intent.putExtra("Tijd", tijd);
+                startActivity(intent);
+
             }
         });
 
@@ -92,9 +117,6 @@ public class PoefToevoegen extends AppCompatActivity {
         });
 
         alert.show();
-
-
-
 
     }
 
@@ -110,55 +132,131 @@ public class PoefToevoegen extends AppCompatActivity {
         }
     }
 
-    /*public void poefToevoegen(View view) {
-        EditText bedragText = (EditText) findViewById(R.id.bedragInput);
-        String bedrag = bedragText.getText().toString();
-        EditText redenText = (EditText) findViewById(R.id.redenInput);
-        String reden = redenText.getText().toString();
 
+    public void ScanQR (View view) {
 
+        setContentView(mScannerView);
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+            if (checkPermission()) {
+                Log.d(TAG,"Permission already granted");
 
-        String gebruiker;
-
-        if (GoogleSignIn.getLastSignedInAccount(this) != null){
-
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-
-            gebruiker = account.getEmail();
-        }
-        else if (FirebaseAuth.getInstance() != null) {
-            mAuth = FirebaseAuth.getInstance();
-            gebruiker = mAuth.getCurrentUser().getEmail();
-        }
-        else {
-            gebruiker = "test@test.com";
+            } else {
+                requestPermission();
+            }
         }
 
-        gebruiker = encodeUserEmail(gebruiker);
+    }
+
+    private boolean checkPermission() {
+        return ( ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA ) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CAMERA);
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CAMERA:
+                if (grantResults.length > 0) {
+
+                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (cameraAccepted){
+                        Log.d(TAG, "onRequestPermissionsResult: Permission Granted, Now you can access camera ");
+                    }else {
+                        Log.d(TAG, "onRequestPermissionsResult: Permission Denied, You cannot access and camera ");
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (shouldShowRequestPermissionRationale(CAMERA)) {
+                                showMessageOKCancel("You need to allow access to both the permissions",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                    requestPermissions(new String[]{CAMERA},
+                                                            REQUEST_CAMERA);
+                                                }
+                                            }
+                                        });
+                                return;
+                            }
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new android.support.v7.app.AlertDialog.Builder(PoefToevoegen.this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+            if (checkPermission()) {
+                if(mScannerView == null) {
+                    mScannerView = new ZXingScannerView(this);
+                    setContentView(mScannerView);
+                }
+                mScannerView.setResultHandler(this);
+                mScannerView.startCamera();
+            } else {
+                requestPermission();
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mScannerView.stopCamera();
+    }
 
 
-        //mDatabase = FirebaseDatabase.getInstance().getReference();
+    @Override
+    public void handleResult(final Result rawResult) {
 
 
-        //Map<String, Object> map = new HashMap<>();
-        //map.put("timestamp", ServerValue.TIMESTAMP);
+        final Intent intent = new Intent(this, fromQr.class);
+
+        TextView resultText = findViewById(R.id.ResultText);
+
+        final String result = rawResult.getText();
+        Log.d("QRCodeScanner", rawResult.getText());
+        Log.d("QRCodeScanner", rawResult.getBarcodeFormat().toString());
 
 
-        Poef mijnpoef = new Poef(gebruiker, bedrag, reden);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Scan Result");
+        builder.setPositiveButton("Opnieuw", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+               mScannerView.resumeCameraPreview(PoefToevoegen.this);
+            }
+        });
+        builder.setNeutralButton("Toevoegen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
-        //mDatabase.child("Poef").child(gebruiker).push().setValue(mijnpoef);
+                intent.putExtra("Value", result);
+                startActivity(intent);
+            }
+        });
+        builder.setMessage(rawResult.getText());
+        AlertDialog alert1 = builder.create();
+        alert1.show();
+    }
 
 
-
-
-        bedragText.setText("");
-        redenText.setText("");
-
-
-
-
-
-    }*/
 
     //mail encoderen omdat "." niet toegestaan is in firebase
     static String encodeUserEmail(String userEmail) {
@@ -168,4 +266,6 @@ public class PoefToevoegen extends AppCompatActivity {
     static String decodeUserEmail(String userEmail) {
         return userEmail.replace(",", ".");
     }
+
+
 }

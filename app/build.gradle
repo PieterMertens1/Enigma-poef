@@ -45,7 +45,11 @@ dependencies {
     //compile group: 'mysql', name: 'mysql-connector-java-5.1.45-bin', version: '5.1.45'
     compile files('mysql-connector-java-5.1.45-bin')
     //compileOnly files('libs/mysql-connector.jar')
+    compile 'com.google.zxing:core:3.3.0'
+    compile 'me.dm7.barcodescanner:zxing:1.9'
 }
+
+
 
 
 

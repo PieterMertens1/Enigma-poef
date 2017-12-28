@@ -292,8 +292,8 @@ public class MainActivity extends AppCompatActivity {
     //code om tekst to ontvangen, controleren en door te sturen via een intent
 
    /* public void sendMessage (View view) {
-        EditText editText = (EditText) findViewById(R.id.editText);
-        String bedrag = editText.getText().toString();
+        EditText textView = (EditText) findViewById(R.id.textView);
+        String bedrag = textView.getText().toString();
         TextView errorText = (TextView) findViewById(R.id.errorText);
         EditText opmerkingText = (EditText) findViewById(R.id.opmerkingText);
         String opmerking = opmerkingText.getText().toString();
