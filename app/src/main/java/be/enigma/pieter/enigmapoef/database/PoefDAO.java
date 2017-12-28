@@ -26,8 +26,13 @@ public class PoefDAO extends BaseDAO {
         String sql = "Select * from Poef";
 
         try {
-            ps = getConnectie().prepareStatement(sql);
-            rs = ps.executeQuery();
+            if (getConnectie() != null) {
+                System.out.println("You made it, take control your database now!");
+                ps = getConnectie().prepareStatement(sql);
+                rs = ps.executeQuery();
+            } else {
+                System.out.println("Failed to make connection!");
+            }
 
             while (rs.next()) {
 

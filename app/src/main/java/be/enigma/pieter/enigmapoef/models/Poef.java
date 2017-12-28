@@ -24,7 +24,7 @@ public class Poef {
         this.gebruiker = gebruiker;
         this.hoeveelheid = hoeveelheid;
         this.reden = reden;
-        this.tijd = ServerValue.TIMESTAMP;
+        //this.tijd = ServerValue.TIMESTAMP;
     }
 
     public String getGebruiker() {
@@ -52,7 +52,7 @@ public class Poef {
     }
 
     public Map<String, String> getTijd() {
-        return tijd;
+        return ServerValue.TIMESTAMP;
     }
 
     public void setTijd(Map<String, String> tijd) {

@@ -1,8 +1,12 @@
 package be.enigma.pieter.enigmapoef;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -14,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import be.enigma.pieter.enigmapoef.database.DatabaseHelper;
 import be.enigma.pieter.enigmapoef.database.PoefDAO;
 import be.enigma.pieter.enigmapoef.models.Poef;
 
@@ -22,6 +27,12 @@ public class PoefBekijken extends AppCompatActivity {
     private static final String TAG = "PoefBekijken =>";
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
+
+    DatabaseHelper mDatabaseHelper;
+    private ListView mListView;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +56,29 @@ public class PoefBekijken extends AppCompatActivity {
         }
 
 
+        mDatabaseHelper = new DatabaseHelper(this);
+        
+        populateListview();
+
+    }
+
+    private void populateListview() {
+        System.out.print(TAG + "populateListview displaying data in the listview");
+
+        Cursor data = mDatabaseHelper.getData();
+         mListView= findViewById(R.id.mListView);
+
+        ArrayList<String> listData = new ArrayList<>();
+        while (data.moveToNext()) {
+            //getstring => column 1 (zero based counting => column 1 = gebruiker)
+            listData.add(data.getString(1));
+        }
+
+        if (listData != new ArrayList<String>()) {
+            ListAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
+            mListView.setAdapter(adapter);
+        }
+
 
     }
 
@@ -59,13 +93,30 @@ public class PoefBekijken extends AppCompatActivity {
 
     public void GetData(View view) {
 
-        PoefDAO poefDAO = new PoefDAO();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //Deze code is om gegevens op te halen uit de mysql database maar de connectie wordt momenteel nog niet gemaakt
+/*        PoefDAO poefDAO = new PoefDAO();
 
         ArrayList<Poef> test = poefDAO.geefAllePoef();
 
 
         TextView poefText = findViewById(R.id.PoefText);
-        poefText.setText(test.toString());
+        poefText.setText(test.toString());*/
     }
 
 

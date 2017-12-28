@@ -1,5 +1,6 @@
 package be.enigma.pieter.enigmapoef;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.google.firebase.database.ServerValue;
 import java.util.HashMap;
 import java.util.Map;
 
+import be.enigma.pieter.enigmapoef.database.DatabaseHelper;
 import be.enigma.pieter.enigmapoef.models.Poef;
 
 public class Request extends AppCompatActivity {
@@ -25,6 +27,9 @@ public class Request extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
+
+
+    private DatabaseHelper mDatabaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,7 @@ public class Request extends AppCompatActivity {
         }
 
 
+        mDatabaseHelper = new DatabaseHelper(this);
 
     }
 
@@ -59,13 +65,82 @@ public class Request extends AppCompatActivity {
     }
 
 
+    public void AddData(String newEntry) {
+        boolean insertData = mDatabaseHelper.addData(newEntry);
+
+        if (insertData) {
+            System.out.print("Data succesfully inserted");
+        }
+        else {
+            System.out.print("Something went wrong in Request.java when inserting the data");
+        }
+    }
+
+
+    public void toListView(View view) {
+            Intent intent = new Intent(this, PoefBekijken.class);
+            startActivity(intent);
+    }
+
+
+
+
+
+
+
+
     public void poefToevoegen(View view) {
 
-        steekInDatabase();
+
+        TextView eigenaarText = findViewById(R.id.EigenaarText);
+        TextView poefText = findViewById(R.id.PoefText);
+        String newEntry = eigenaarText.getText().toString();
+
+        if (eigenaarText.length() > 0) {
+            AddData(newEntry);
+            poefText.setText(newEntry + " is toegevoegd\n");
+        }
+        else {
+            poefText.setText("Er is iets misgelopen");
+        }
+
+
+
+
+
+
+        //steekInDatabase();
+
 
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     private void steekInDatabase() {
+
         EditText bedragText = (EditText) findViewById(R.id.BedragText);
         String bedrag = bedragText.getText().toString();
         String reden = "test";

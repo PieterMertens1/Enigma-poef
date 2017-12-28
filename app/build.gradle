@@ -41,9 +41,10 @@ dependencies {
     // Required only if Twitter login support is required
     //compile("com.twitter.sdk.android:twitter-core:3.0.0@aar") { transitive = true }
     compile 'com.android.support:support-annotations:27.0.2'
-    implementation files('libs/mysql-connector-java-5.1.45-bin.jar')
-    //compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.41'
-
+    //implementation files('libs/mysql-connector-java-5.1.45-bin.jar')
+    //compile group: 'mysql', name: 'mysql-connector-java-5.1.45-bin', version: '5.1.45'
+    compile files('mysql-connector-java-5.1.45-bin')
+    //compileOnly files('libs/mysql-connector.jar')
 }
 
 
