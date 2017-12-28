@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
+        //----------------------------------------------------GOOGLE SIGN IN------------------------------------------------------
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         SignInButton sign_in_google = findViewById(R.id.sign_in_button);
 
         sign_in_google.setOnClickListener(myhandler1);
+        //----------------------------------------------------GOOGLE SIGN IN------------------------------------------------------
 
 
         // Initialize Facebook Login button
@@ -199,33 +201,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    public void getCurrentUser() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // Name, email address, and profile photo Url
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-            Uri photoUrl = user.getPhotoUrl();
-
-            // Check if user's email is verified
-            boolean emailVerified = user.isEmailVerified();
-
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getToken() instead.
-            String uid = user.getUid();
-        }
-    }
-
-
-
     private void updateUIFirebase(FirebaseUser currentUser) {
 
             Intent intent = new Intent(this, Mainpage.class);
             intent.putExtra("user", currentUser.toString());
             startActivity(intent);
-
     }
 
     private void updateUIGoogle( GoogleSignInAccount account) {
@@ -236,9 +216,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Mainpage.class);
         intent.putExtra("user", account.toString());
         startActivity(intent);
-
     }
-
 
     // [START auth_with_facebook]
     private void handleFacebookAccessToken(AccessToken token) {
@@ -284,32 +262,4 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-
-    //code om tekst to ontvangen, controleren en door te sturen via een intent
-
-   /* public void sendMessage (View view) {
-        EditText textView = (EditText) findViewById(R.id.textView);
-        String bedrag = textView.getText().toString();
-        TextView errorText = (TextView) findViewById(R.id.errorText);
-        EditText opmerkingText = (EditText) findViewById(R.id.opmerkingText);
-        String opmerking = opmerkingText.getText().toString();
-
-
-        if (bedrag.isEmpty() || bedrag.equals("0") || opmerking.isEmpty() || opmerking.equals(" ")) {
-            errorText.setText("De in te geven poef moet hoger zijn dan €0 en gelieve de reden tot poef in te geven");
-        }
-        else {
-            Intent intent = new Intent(this, DisplayMessageActivity.class);
-
-            intent.putExtra(EXTRA_MESSAGE, bedrag);
-            intent.putExtra("test", opmerking);
-            startActivity(intent);
-        }
-
-
-
-
-    }
-    */
 }
