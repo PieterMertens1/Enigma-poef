@@ -32,7 +32,7 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
     private static final String TAG = "PoefToevoegen => ";
     private FirebaseAuth mAuth;
 
-    private DatabaseHelper mDatabaseHelper;
+
 
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView mScannerView;
@@ -55,9 +55,6 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
             mAuth = FirebaseAuth.getInstance();
             textview.setText(mAuth.getCurrentUser().getEmail());
         }
-
-
-        mDatabaseHelper = new DatabaseHelper(this);
 
         mScannerView = new ZXingScannerView(this);
 
@@ -99,7 +96,7 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 // Do something with value!
-                AddData(gebruiker, hoeveelheid, reden, tijd);
+                //AddData(gebruiker, hoeveelheid, reden, tijd);
 
                 intent.putExtra("Gebruiker", gebruiker);
                 intent.putExtra("Hoeveelheid", hoeveelheid);
@@ -119,19 +116,6 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
         alert.show();
 
     }
-
-
-    public void AddData(String gebruiker, String hoeveelheid, String reden, String tijd) {
-        boolean insertData = mDatabaseHelper.addData(gebruiker, hoeveelheid, reden, tijd);
-
-        if (insertData) {
-            System.out.print("Data succesfully inserted");
-        }
-        else {
-            System.out.print("Something went wrong in Request.java when inserting the data");
-        }
-    }
-
 
     public void ScanQR (View view) {
 

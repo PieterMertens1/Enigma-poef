@@ -67,6 +67,18 @@ public class PoefBekijken extends AppCompatActivity {
     private void populateListview() {
         System.out.print(TAG + "populateListview displaying data in the listview");
 
+        //--------- Eerst lokale mDatabaseHelper gelijk zetten met remote mysql server ------------
+
+
+
+
+
+
+
+        //-----------------------------------------------------------------------------------------
+
+
+
         Cursor data = mDatabaseHelper.getPoefByUser(textview.getText().toString());
          mListView= findViewById(R.id.mListView);
 
