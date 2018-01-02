@@ -1,5 +1,7 @@
 package be.enigma.pieter.enigmapoef.database;
 
+import android.os.AsyncTask;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -19,6 +21,7 @@ public class DatabaseSingleton {
             e.printStackTrace();
         }
     }
+
 
     public static DatabaseSingleton getDatabaseSingleton() {
         if (ref == null)

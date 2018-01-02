@@ -1,8 +1,12 @@
 package be.enigma.pieter.enigmapoef;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -12,13 +16,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.*;
 
-import be.enigma.pieter.enigmapoef.database.DatabaseHelper;
+import be.enigma.pieter.enigmapoef.database.DatabaseProperties;
+import be.enigma.pieter.enigmapoef.database.PoefDAO;
 import be.enigma.pieter.enigmapoef.models.Poef;
+
+import static be.enigma.pieter.enigmapoef.database.BaseDAO.getConnectie;
 
 public class Request extends AppCompatActivity {
 
@@ -28,8 +33,8 @@ public class Request extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
+    private static AsyncTask<String, String, String> mAsyncTask;
 
-    private DatabaseHelper mDatabaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +58,6 @@ public class Request extends AppCompatActivity {
         }
 
 
-        mDatabaseHelper = new DatabaseHelper(this);
-
     }
 
     @Override
@@ -65,16 +68,37 @@ public class Request extends AppCompatActivity {
     }
 
 
-    public void AddData(String gebruiker, String hoeveelheid, String reden, String tijd) {
-        boolean insertData = mDatabaseHelper.addData(gebruiker, hoeveelheid, reden, tijd);
 
-        if (insertData) {
-            System.out.print("Data succesfully inserted");
-        }
-        else {
-            System.out.print("Something went wrong in Request.java when inserting the data");
-        }
+    public void AddData(final Poef poef) {
+        Log.wtf(TAG, "AddData: before");
+
+        mAsyncTask = new AsyncTask<String, String, String>() {
+            @Override
+            protected String doInBackground(String... strings) {
+                PoefDAO poefDAO = new PoefDAO();
+
+
+                if (getConnectie()!= null ) {
+                    poefDAO.insert(poef);
+
+                    Log.wtf(TAG, "doInBackground: This should work");
+                    //return "Succes!";
+                }
+                else {
+                    Log.wtf(TAG, "doInBackground: Connection is null");
+                    //return "connection is null";
+                }
+                return null;
+            }
+
+
+        };
+
+        mAsyncTask.execute("");
+        Log.wtf(TAG, "AddData: after");
+
     }
+
 
 
     public void toListView(View view) {
@@ -89,16 +113,26 @@ public class Request extends AppCompatActivity {
 
 
 
-/*    public void poefToevoegen(View view) {
+    public void poefToevoegen(View view) {
 
 
         TextView eigenaarText = findViewById(R.id.EigenaarText);
         TextView poefText = findViewById(R.id.PoefText);
-        String newEntry = eigenaarText.getText().toString();
+        EditText bedragInvoer = findViewById(R.id.BedragText);
 
-        if (eigenaarText.length() > 0) {
-            AddData(newEntry);
-            poefText.setText(newEntry + " is toegevoegd\n");
+        String eigenaar = eigenaarText.getText().toString();
+        String hoeveelheid = bedragInvoer.getText().toString();
+        String reden = "test";
+        String tijd = "";
+
+        Poef mijnpoef = new Poef(eigenaar, hoeveelheid, reden, tijd);
+
+        if (mijnpoef != new Poef())
+
+        if (!(eigenaar.isEmpty()) || !(hoeveelheid.isEmpty()) ) {
+            //poefText.setText(mijnpoef.toString() + " Aangemaakt op: " + tijd + " is doorgestuurd naar addData\n");
+            AddData(mijnpoef);
+            Log.wtf(TAG, "poefToevoegen: test");
         }
         else {
             poefText.setText("Er is iets misgelopen");
@@ -109,12 +143,9 @@ public class Request extends AppCompatActivity {
 
 
 
-        //steekInDatabase();
 
 
-    }*/
-
-
+    }
 
 
 
@@ -139,7 +170,9 @@ public class Request extends AppCompatActivity {
 
 
 
-    private void steekInDatabase() {
+
+
+   /* private void steekInDatabase() {
 
         EditText bedragText = (EditText) findViewById(R.id.BedragText);
         String bedrag = bedragText.getText().toString();
@@ -165,7 +198,7 @@ public class Request extends AppCompatActivity {
         map.put("timestamp", ServerValue.TIMESTAMP);
 
 
-        Poef mijnpoef = new Poef(gebruiker, bedrag, reden);
+        Poef mijnpoef = new Poef(gebruiker, bedrag, reden,tijd);
 
         //mDatabase.child("Poef").child(gebruiker).push().setValue(mijnpoef);
         mDatabase.child("users").child(gebruiker).setValue(mijnpoef);
@@ -174,7 +207,7 @@ public class Request extends AppCompatActivity {
         TextView textView = findViewById(R.id.PoefText);
         textView.setText(mijnpoef.getGebruiker() + " " + mijnpoef.getHoeveelheid() + " " + mijnpoef.getReden() + " " + mijnpoef.getTijd() );
     }
-
+*/
     static String encodeUserEmail(String userEmail) {
         return userEmail.replace(".", ",");
     }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -22,21 +23,24 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 
 import be.enigma.pieter.enigmapoef.database.DatabaseHelper;
+import be.enigma.pieter.enigmapoef.database.PoefDAO;
 import be.enigma.pieter.enigmapoef.models.Poef;
 import com.google.zxing.Result;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import static android.Manifest.permission.CAMERA;
+import static be.enigma.pieter.enigmapoef.database.BaseDAO.getConnectie;
 
 public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
     private static final String TAG = "PoefToevoegen => ";
     private FirebaseAuth mAuth;
 
-
+    private static AsyncTask<String, String, String> mAsyncTask;
 
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView mScannerView;
 
+    String gebruiker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +54,13 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
             textview.setText(account.getDisplayName());
+            gebruiker = account.getEmail();
+
         }
         else if (FirebaseAuth.getInstance() != null) {
             mAuth = FirebaseAuth.getInstance();
             textview.setText(mAuth.getCurrentUser().getEmail());
+            gebruiker = mAuth.getCurrentUser().getEmail();
         }
 
         mScannerView = new ZXingScannerView(this);
@@ -70,13 +77,15 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
         EditText bedragText = (EditText) findViewById(R.id.bedragInput);
         EditText redenText = (EditText) findViewById(R.id.redenInput);
 
-
-        final String gebruiker = naamText.getText().toString();
+        //final String gebruiker = mAuth.getCurrentUser().getEmail();
         final String hoeveelheid = bedragText.getText().toString();
         final String reden = redenText.getText().toString();
+        String tijd = "";
 
-        Poef mijnPoefPoef = new Poef(gebruiker, hoeveelheid, reden);
-        final String tijd = mijnPoefPoef.getTijd();
+        final Poef mijnPoefPoef = new Poef(gebruiker, hoeveelheid, reden, tijd);
+        tijd = mijnPoefPoef.getTijd();
+
+        addData(mijnPoefPoef);
 
         final Intent intent = new Intent(this, toQr.class);
 
@@ -92,16 +101,16 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
 
         alert.setView(textView);
 
+        final String finalTijd = tijd;
+
+
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-
-                // Do something with value!
-                //AddData(gebruiker, hoeveelheid, reden, tijd);
 
                 intent.putExtra("Gebruiker", gebruiker);
                 intent.putExtra("Hoeveelheid", hoeveelheid);
                 intent.putExtra("Reden", reden);
-                intent.putExtra("Tijd", tijd);
+                intent.putExtra("Tijd", finalTijd);
                 startActivity(intent);
 
             }
@@ -116,6 +125,33 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
         alert.show();
 
     }
+
+    private void addData(final Poef poef) {
+
+        Log.wtf(TAG, "AddData: before");
+
+        mAsyncTask = new AsyncTask<String, String, String>() {
+            @Override
+            protected String doInBackground(String... strings) {
+                PoefDAO poefDAO = new PoefDAO();
+
+                if (getConnectie() != null) {
+                    //insert poef into database
+                    poefDAO.insert(poef);
+
+                    Log.wtf(TAG, "doInBackground: Succes!");
+                } else {
+                    Log.wtf(TAG, "doInBackground: Connection is null");
+
+                }
+                return null;
+            }
+        };
+
+        mAsyncTask.execute("");
+        Log.wtf(TAG, "AddData: after");
+    }
+
 
     public void ScanQR (View view) {
 

@@ -1,8 +1,11 @@
 package be.enigma.pieter.enigmapoef.database;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.util.Log;
+
+
+import java.sql.*;
 import java.util.ArrayList;
 
 import be.enigma.pieter.enigmapoef.models.Poef;
@@ -18,90 +21,146 @@ public class PoefDAO extends BaseDAO {
     }
 
 
-    public ArrayList<Poef> geefAllePoef() {
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public Poef geefPoefVanId(int id) {
+        Poef poef = new Poef();
 
-        ArrayList<Poef> lijst = new ArrayList<>();
+        String query = "SELECT * FROM Poef WHERE id = ?" ;
+        try (Connection con = BaseDAO.getConnectie()) {
+            try (PreparedStatement preparedStatement = con.prepareStatement(query)){
+
+                preparedStatement.setInt(1, id);
+                Log.wtf("test", "meegegeven id = "+ id);
+
+                try (ResultSet rs = preparedStatement.executeQuery()) {
+                    while (rs.next()) {
+                        poef.setGebruiker(rs.getString("gebruiker"));
+                        poef.setHoeveelheid(rs.getString("hoeveelheid"));
+                        poef.setReden(rs.getString("reden"));
+                        poef.setTijd(rs.getString("tijd"));
+                    }
+                } catch (Exception ex) {
+                    Log.wtf("error",ex);
+                    System.out.println(ex);
+                }
+            } catch (Exception ex) {
+                System.out.println(ex);
+                Log.wtf("error",ex);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.wtf("error",e);
+        }
+
+        return poef;
+
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public void insert(Poef poef) {
+
+        try (Connection con = BaseDAO.getConnectie()) {
+            if (poef != null) {
+
+                    String query = "INSERT INTO Poef (id,gebruiker,hoeveelheid,reden,tijd,checked) VALUES (NULL,?,?,?,?,0);";
+                    con.setAutoCommit(false);
+                    try (PreparedStatement preparedStatement = con.prepareStatement(query,
+                            PreparedStatement.RETURN_GENERATED_KEYS)) {
+                        preparedStatement.setString(1, poef.getGebruiker());
+                        preparedStatement.setString(2, poef.getHoeveelheid());
+                        preparedStatement.setString(3, poef.getReden());
+                        preparedStatement.setString(4, poef.getTijd());
+
+                        preparedStatement.executeUpdate();
+                        con.commit();
+                    } catch (Exception ex) {
+                        System.out.println(ex);
+                    }
+
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static ArrayList<Integer> getAllIdUnchecked() {
+
+        Integer id;
         ResultSet rs = null;
-        PreparedStatement ps = null;
-        String sql = "Select * from Poef";
-
-        try {
-            if (getConnectie() != null) {
-                System.out.println("You made it, take control your database now!");
-                ps = getConnectie().prepareStatement(sql);
-                rs = ps.executeQuery();
-            } else {
-                System.out.println("Failed to make connection!");
-            }
-
-            while (rs.next()) {
-
-                lijst.add(new Poef(rs.getString("gebruiker"), rs.getString("hoeveelheid"), rs.getString("reden")));
-
+        ArrayList<Integer> list = new ArrayList<>();
+        String query = "SELECT id FROM Poef where checked = 0";
+        try (Connection con = BaseDAO.getConnectie()){
+            try (PreparedStatement preparedStatement = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)){
+                preparedStatement.executeQuery();
+                con.commit();
+                while (rs.next()) {
+                    id = rs.getInt("id");
+                    list.add(id);
+                }
+            } catch (Exception ex) {
+                System.out.println(ex);
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-        finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (SQLException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return lijst;
-
+        return list;
 
     }
 
-    public int insert(Poef poef) {
-        int result = 0;
-        PreparedStatement ps = null;
-        String sql = "Insert into Poef Values(?,?,?)";
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static int getId(Poef poef) {
+        int id = 0;
+//----------------------------------NIET OK!!!!!---------------------------------
+        String query = "SELECT id FROM Poef WHERE gebruiker = ? and hoeveelheid = ? and reden = ?" ;
+        try (Connection con = BaseDAO.getConnectie()) {
+            try (PreparedStatement preparedStatement = con.prepareStatement(query)){
 
+                preparedStatement.setString(1, poef.getGebruiker());
+                preparedStatement.setString(2, poef.getHoeveelheid());
+                preparedStatement.setString(3, poef.getReden());
 
-        try {
-            ps = getConnectie().prepareStatement(sql);
-            ps.setString(1, poef.getGebruiker());
-            ps.setString(2, poef.getHoeveelheid());
-            ps.setString(3, poef.getReden());
-
-            return ps.executeUpdate();
-
+                try (ResultSet rs = preparedStatement.executeQuery()) {
+                    while (rs.next()) {
+                        id = rs.getInt("id");
+                    }
+                } catch (Exception ex) {
+                    System.out.println(ex);
+                }
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-        finally
-        {
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (SQLException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
-
-
-        return result;
+        return id;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

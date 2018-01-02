@@ -16,15 +16,34 @@ public class Poef {
     private String reden;
     private String tijd;
 
+    @Override
+    public String toString() {
+        return "Poef{" +
+                "gebruiker='" + gebruiker + '\'' +
+                ", hoeveelheid='" + hoeveelheid + '\'' +
+                ", reden='" + reden + '\'' +
+                ", tijd = '" + tijd + '\n' +
+                '}';
+    }
 
     public Poef() {
     }
 
-    public Poef(String gebruiker, String hoeveelheid, String reden) {
+    public Poef(String gebruiker, String hoeveelheid, String reden, String tijd) {
         this.gebruiker = gebruiker;
         this.hoeveelheid = hoeveelheid;
         this.reden = reden;
+
+
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        this.tijd =  timestamp.toString();
+
+
+        //this.tijd = tijd;
     }
+
+
+
 
     public String getGebruiker() {
         return gebruiker;
@@ -52,8 +71,9 @@ public class Poef {
 
 
     public String getTijd() {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        return timestamp.toString();
+        //Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        //return timestamp.toString();
+        return tijd;
     }
 
     public void setTijd(String tijd) {

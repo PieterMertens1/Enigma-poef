@@ -1,15 +1,14 @@
 package be.enigma.pieter.enigmapoef.database;
-
-import java.sql.Connection;
+import java.sql.*;
 
 /**
  * Created by Pieter on 27/12/2017.
  */
 
 public class BaseDAO {
-    private Connection connectie;
+    private static Connection connectie;
 
-    public Connection getConnectie() {
+    public static Connection getConnectie() {
         return connectie;
     }
 
