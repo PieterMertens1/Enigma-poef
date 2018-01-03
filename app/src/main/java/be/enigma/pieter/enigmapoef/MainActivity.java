@@ -61,11 +61,15 @@ public class MainActivity extends AppCompatActivity {
         //----------------------------------------------------GOOGLE SIGN IN------------------------------------------------------
 
 
-        // Initialize Facebook Login button
+        /*// Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton;
+
+
         loginButton = findViewById(R.id.login_button);
         loginButton.setReadPermissions("email", "public_profile");
+
+
         // If using in a fragment
         //loginButton.setFragment(this);
 
@@ -92,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 updateUI(null);
                 // [END_EXCLUDE]
             }
-        });
+        });*/
     }
 
     @Override

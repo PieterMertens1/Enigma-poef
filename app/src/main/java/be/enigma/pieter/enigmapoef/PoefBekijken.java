@@ -189,7 +189,7 @@ public class PoefBekijken extends AppCompatActivity {
                 totaal.add(s);
         }
 
-        // Sorting
+        // Sorting is ni volledig juist (word wel gesorteerd op dag maar niet op sec door de formatting)
         Collections.sort(totaal, new Comparator<String>() {
             @Override
             public int compare(String s, String t1) {
