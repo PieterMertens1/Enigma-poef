@@ -41,10 +41,11 @@ public class fromQr extends AppCompatActivity {
 
 
     Poef poef = new Poef();
-    int id;
+    int id = 0;
 
     private static AsyncTask<String, String, String> mAsyncTask;
     private static AsyncTask<String, String, String> mAsyncTask2;
+    private static AsyncTask<String, String, String> mAsyncTask3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,7 @@ public class fromQr extends AppCompatActivity {
                 if (getConnectie() != null) {
                     //insert poef into database
 
+                    Log.wtf(TAG, "doInBackground: Poef before dao:" + poef.toString());
                     id = poefDAO.getId(poef);
 
 
@@ -121,16 +123,16 @@ public class fromQr extends AppCompatActivity {
             protected String doInBackground(String... strings) {
 
                 PoefDAO poefDAO = new PoefDAO();
-                if (getConnectie() != null) {
+                if (getConnectie() != null && id !=0) {
                     //insert poef into database
 
 
                     poef = poefDAO.geefPoefVanId(id);
 
-                    Log.wtf(TAG, "doInBackground: " + poef.toString());
+                    Log.wtf(TAG, "doInBackground2: " + poef.toString());
                     Log.wtf(TAG, "doInBackground2: Succes!");
                 } else {
-                    Log.wtf(TAG, "doInBackground: Connection is null");
+                    Log.wtf(TAG, "doInBackground2: Connection is null");
 
                 }
                 return null;
@@ -153,6 +155,26 @@ public class fromQr extends AppCompatActivity {
                     //gebruikerDbText.setText(Integer.toString(id) + " niet goed");
                 }
 
+            }
+        };
+        mAsyncTask3 = new AsyncTask<String, String, String>() {
+
+
+            @Override
+            protected String doInBackground(String... strings) {
+
+                PoefDAO poefDAO = new PoefDAO();
+                if (getConnectie() != null) {
+
+                    poefDAO.setChecked(poef);
+
+
+                    Log.wtf(TAG, "doInBackground3: Succes!");
+                } else {
+                    Log.wtf(TAG, "doInBackground3: Connection is null");
+
+                }
+                return null;
             }
         };
     }
@@ -184,12 +206,15 @@ public class fromQr extends AppCompatActivity {
 
     public void btnAccept (View view) {
         //dit add naar de sqlite database, moet ook nog naar de mysql database!
-        //AddData(gebruiker, hoeveelheid, reden, tijd);
+        AddData(gebruiker, hoeveelheid, reden, tijd);
+
+        mAsyncTask3.execute("");
 
 
     }
 
     public void AddData(String gebruiker, String hoeveelheid, String reden, String tijd) {
+
         boolean insertData = mDatabaseHelper.addData(gebruiker, hoeveelheid, reden, tijd);
 
         if (insertData) {

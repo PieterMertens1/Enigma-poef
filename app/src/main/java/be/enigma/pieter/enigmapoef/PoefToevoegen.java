@@ -3,6 +3,7 @@ package be.enigma.pieter.enigmapoef;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -40,6 +41,8 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView mScannerView;
 
+    private DatabaseHelper mDatabaseHelper;
+
     String gebruiker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,7 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
         }
 
         mScannerView = new ZXingScannerView(this);
+        mDatabaseHelper = new DatabaseHelper(this);
 
 
     }
@@ -85,7 +89,10 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
         final Poef mijnPoefPoef = new Poef(gebruiker, hoeveelheid, reden, tijd);
         tijd = mijnPoefPoef.getTijd();
 
+        //to remote mysql database
         addData(mijnPoefPoef);
+        //to local sqlite database
+        AddData(gebruiker, hoeveelheid, reden, tijd);
 
         final Intent intent = new Intent(this, toQr.class);
 
@@ -150,6 +157,18 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
 
         mAsyncTask.execute("");
         Log.wtf(TAG, "AddData: after");
+    }
+
+    public void AddData(String gebruiker, String hoeveelheid, String reden, String tijd) {
+
+        boolean insertData = mDatabaseHelper.addData(gebruiker, hoeveelheid, reden, tijd);
+
+        if (insertData) {
+            System.out.print("Data succesfully inserted");
+        }
+        else {
+            System.out.print("Something went wrong in Request.java when inserting the data");
+        }
     }
 
 
