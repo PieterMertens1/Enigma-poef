@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -44,6 +45,10 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
     private DatabaseHelper mDatabaseHelper;
 
     String gebruiker;
+
+    private ProgressBar progressBar;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +74,9 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
         mScannerView = new ZXingScannerView(this);
         mDatabaseHelper = new DatabaseHelper(this);
 
+        progressBar = findViewById(R.id.progressBar_cyclic);
+        progressBar.setIndeterminate(true);
+
 
     }
 
@@ -93,6 +101,9 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
         addData(mijnPoefPoef);
         //to local sqlite database
         AddData(gebruiker, hoeveelheid, reden, tijd);
+
+        progressBar.setVisibility(View.VISIBLE);
+
 
         final Intent intent = new Intent(this, toQr.class);
 
@@ -130,6 +141,8 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
         });
 
         alert.show();
+
+
 
     }
 

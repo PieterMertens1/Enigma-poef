@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,11 +54,17 @@ public class PoefBekijken extends AppCompatActivity {
     private ListView mListView;
 
     TextView textview;
+    TextView totaalPoefText;
     String user;
 
     ArrayList<Poef> poeflijstMysql;
 
     AsyncTask<String, String, String> mAsyncTask;
+
+    private float totaalPoef = 0;
+
+    private ProgressBar progressBar;
+
 
 
     @Override
@@ -70,6 +77,9 @@ public class PoefBekijken extends AppCompatActivity {
 
         //[Checken welke user aangemeld is]
         textview = (TextView) findViewById(R.id.eigenaarText);
+        totaalPoefText = findViewById(R.id.TotaalText);
+        progressBar = findViewById(R.id.progressBar_cyclic);
+        progressBar.setIndeterminate(true);
 
         if (GoogleSignIn.getLastSignedInAccount(this) != null){
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
@@ -122,11 +132,6 @@ public class PoefBekijken extends AppCompatActivity {
         //-----------------------------------------------------------------------------------------
 
 
-
-
-
-
-
     }
 
     private void populateListview() {
@@ -135,22 +140,6 @@ public class PoefBekijken extends AppCompatActivity {
 
         Cursor data = mDatabaseHelper.getPoefByUser(textview.getText().toString());
         mListView= findViewById(R.id.mListView);
-
-        /*ArrayList<String> poeflijstSQLITE = new ArrayList<>();
-        while (data.moveToNext()) {
-            //getstring => column 1 (zero based counting => column 1 = gebruiker)
-
-            //listData.add(data.getString(1)); gebruiker
-            //listData.add(data.getString(2)); aantal
-            //listData.add(data.getString(3)); reden
-            //listData.add(data.getString(4)); tijd
-
-            String s = data.getString(4);
-            s = s.substring(0, Math.min(s.length(), 10));
-
-            String insertValue = s + ": €" + data.getString(2) + " " + data.getString(3);
-            poeflijstSQLITE.add(insertValue);
-        }*/
 
         ArrayList<Poef> poeflijstSQLITE = new ArrayList<>();
 
@@ -168,6 +157,8 @@ public class PoefBekijken extends AppCompatActivity {
             String tijd = poef.getTijd();
             tijd = tijd.substring(0, Math.min(tijd.length(), 10));
 
+            totaalPoef += Float.parseFloat(data.getString(2));
+
             String insertValue = tijd + ": €" + poef.getHoeveelheid() + " " + poef.getReden();
             formatedSQLITE.add(insertValue);
             poeflijstSQLITE.add(poef);
@@ -177,6 +168,8 @@ public class PoefBekijken extends AppCompatActivity {
         {
             String tijd = poef.getTijd();
             tijd = tijd.substring(0, Math.min(tijd.length(), 10));
+
+            totaalPoef += Float.parseFloat(poef.getHoeveelheid());
 
             String insertValue = tijd + ": €" + poef.getHoeveelheid() + " " + poef.getReden();
             formatedMYSQL.add(insertValue);
@@ -202,6 +195,10 @@ public class PoefBekijken extends AppCompatActivity {
             mListView.setAdapter(adapter);
         }
 
+        Log.wtf(TAG, "populateListview: Totaal: " + totaalPoef);
+
+        totaalPoefText.setText("Totaal: €" + Float.toString(totaalPoef));
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override

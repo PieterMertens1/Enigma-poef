@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import be.enigma.pieter.enigmapoef.database.DatabaseHelper;
@@ -38,7 +39,7 @@ public class fromQr extends AppCompatActivity {
     TextView redenDbText;
     TextView tijdDbText;
 
-
+    private ProgressBar progressBar;
 
     Poef poef = new Poef();
     int id = 0;
@@ -66,6 +67,9 @@ public class fromQr extends AppCompatActivity {
         else {
             resultText.setText(null);
         }
+
+        progressBar = findViewById(R.id.progressBar_cyclic);
+        progressBar.setIndeterminate(true);
 
 
         gebruikerText = findViewById(R.id.GebruikerText);
@@ -154,7 +158,7 @@ public class fromQr extends AppCompatActivity {
                 else {
                     //gebruikerDbText.setText(Integer.toString(id) + " niet goed");
                 }
-
+                progressBar.setVisibility(View.INVISIBLE);
             }
         };
         mAsyncTask3 = new AsyncTask<String, String, String>() {
