@@ -99,13 +99,13 @@ public class MainActivity extends AppCompatActivity {
         });*/
     }
 
-    @Override
+/*    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Pass the activity result back to the Facebook SDK
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
-    }
+    }*/
 
     View.OnClickListener myhandler1 = new View.OnClickListener() {
         public void onClick(View v) {
@@ -145,7 +145,13 @@ public class MainActivity extends AppCompatActivity {
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
-        updateUIGoogle(account);
+        if (account == null) {
+         updateUI(null);
+        }
+        else {
+            updateUIGoogle(account);
+        }
+
 
     }
 
@@ -191,9 +197,6 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-                                    //Toast.LENGTH_SHORT).show();
-                                //updateUI(null);
                                 TextView errorText = (TextView) findViewById(R.id.errorText);
                                 String error = "De aanmeldingsgegevens kloppen niet.";
                                 errorText.setText(error);
@@ -218,7 +221,10 @@ public class MainActivity extends AppCompatActivity {
         //startActivityForResult(signInIntent, RC_SIGN_IN);
 
         Intent intent = new Intent(this, Mainpage.class);
-        intent.putExtra("user", account.toString());
+
+        if (account.toString() != null) {
+            intent.putExtra("user", account.toString());
+        }
         startActivity(intent);
     }
 

@@ -12,6 +12,12 @@
     <string name="facebook_app_id" translatable="false">200155947209616</string>
     <string name="facebook_application_id" translatable="false">200155947209616</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb200155947209616</string>
+    <string name="poef_bekijken">Poef bekijken</string>
+    <string name="poef_toevoegen">Poef toevoegen</string>
+    <string name="poef_betalen">Poef betalen</string>
+    <string name="afmelden">Afmelden</string>
+    <string name="Enigmaschild">Enigmaschild</string>
+    <string name="password">Password</string>
 
 
 </resources>

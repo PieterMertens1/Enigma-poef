@@ -1,5 +1,6 @@
 package be.enigma.pieter.enigmapoef;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ public class toQr extends AppCompatActivity {
 
 
     ImageView imageView;
-    Button button;
+    Button backButton;
     TextView textView;
     String EditTextValue ;
     Thread thread ;
@@ -38,7 +39,7 @@ public class toQr extends AppCompatActivity {
 
         imageView = (ImageView)findViewById(R.id.imageView);
         textView = (TextView)findViewById(R.id.editText);
-        button = (Button)findViewById(R.id.button);
+        backButton = (Button)findViewById(R.id.BackButton);
 
     }
 
@@ -118,11 +119,9 @@ public class toQr extends AppCompatActivity {
     }
 
 
+    public void Backbutton_onclick(View view) {
+        Intent intent = new Intent(this, Mainpage.class);
+        startActivity(intent);
 
-
-
-
-
-
-
+    }
 }

@@ -1,13 +1,19 @@
 package be.enigma.pieter.enigmapoef;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
@@ -18,6 +24,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -71,6 +79,18 @@ public class PoefBekijken extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poef_bekijken);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
+        // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar();
+
+        // Enable the Up button
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
@@ -157,7 +177,14 @@ public class PoefBekijken extends AppCompatActivity {
             String tijd = poef.getTijd();
             tijd = tijd.substring(0, Math.min(tijd.length(), 10));
 
-            totaalPoef += Float.parseFloat(data.getString(2));
+
+            if (!(poef.getHoeveelheid().equals("") || poef.getHoeveelheid() == null)) {
+                totaalPoef += Float.parseFloat(poef.getHoeveelheid());
+            }
+            else {
+                totaalPoef += 0;
+            }
+
 
             String insertValue = tijd + ": €" + poef.getHoeveelheid() + " " + poef.getReden();
             formatedSQLITE.add(insertValue);
@@ -169,7 +196,12 @@ public class PoefBekijken extends AppCompatActivity {
             String tijd = poef.getTijd();
             tijd = tijd.substring(0, Math.min(tijd.length(), 10));
 
-            totaalPoef += Float.parseFloat(poef.getHoeveelheid());
+            if (!(poef.getHoeveelheid().equals("") || poef.getHoeveelheid() == null)) {
+                totaalPoef += Float.parseFloat(poef.getHoeveelheid());
+            }
+            else {
+                totaalPoef += 0;
+            }
 
             String insertValue = tijd + ": €" + poef.getHoeveelheid() + " " + poef.getReden();
             formatedMYSQL.add(insertValue);
@@ -197,7 +229,7 @@ public class PoefBekijken extends AppCompatActivity {
 
         Log.wtf(TAG, "populateListview: Totaal: " + totaalPoef);
 
-        totaalPoefText.setText("Totaal: €" + Float.toString(totaalPoef));
+        totaalPoefText.setText("Totaal: €" + Float.toString(totaalPoef/2)); // omdat 2 keer toegevoegd in 2 verschillende databases is de totaalpoef dubbel zo hoog als moet
         progressBar.setVisibility(View.INVISIBLE);
     }
 
@@ -208,6 +240,81 @@ public class PoefBekijken extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.Toevoegen:
+                //Write your code
+                Log.wtf("test", "onOptionsItemSelected: toevoegen" );
+                intent = new Intent(this, PoefToevoegen.class);
+                startActivity(intent);
+
+
+                return true;
+            case R.id.Bekijken:
+                //Write your code
+                Log.wtf("test", "onOptionsItemSelected: bekijken" );
+                intent = new Intent(this, PoefBekijken.class);
+                startActivity(intent);
+
+
+                return true;
+            case R.id.Betalen:
+                //Write your code
+                Log.wtf("test", "onOptionsItemSelected: betalen" );
+                intent = new Intent(Intent.ACTION_SEND);
+
+
+                // Always use string resources for UI text.
+                // This says something like "Share this photo with"
+                String title = getResources().getString(R.string.app_name);
+                // Create intent to show chooser
+                Intent chooser = Intent.createChooser(intent, title);
+
+                // Verify the intent will resolve to at least one activity
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(chooser);
+                }
+
+
+                return true;
+            case R.id.Afmelden:
+                //Write your code
+                Log.wtf("test", "onOptionsItemSelected: afmelden" );
+
+                FirebaseAuth.getInstance().signOut();
+
+                GoogleSignInClient mGoogleSignInClient;
+
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build();
+
+                mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+                mGoogleSignInClient.signOut();
+                mGoogleSignInClient.revokeAccess();
+
+
+                intent = new Intent(this, MainActivity.class);
+
+                startActivity(intent);
+
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     //----------------------DEZE CODE IS OM DE SQLITE DATABASE TE SYNCHRONISEREN MET DE MYSQL DATABASE--------------------------------

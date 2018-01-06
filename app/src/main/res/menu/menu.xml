@@ -1,0 +1,22 @@
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/Toevoegen"
+        android:title="@string/poef_toevoegen"
+        app:showAsAction="collapseActionView" />
+
+    <item
+        android:id="@+id/Bekijken"
+        android:title="@string/poef_bekijken"
+        app:showAsAction="collapseActionView" />
+
+    <item
+        android:id="@+id/Betalen"
+        android:title="@string/poef_betalen"
+        app:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/Afmelden"
+        android:title="@string/afmelden"
+        app:showAsAction="collapseActionView" />
+</menu>

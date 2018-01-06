@@ -3,18 +3,21 @@ package be.enigma.pieter.enigmapoef;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -22,13 +25,16 @@ import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.zxing.Result;
 
 import be.enigma.pieter.enigmapoef.database.DatabaseHelper;
 import be.enigma.pieter.enigmapoef.database.PoefDAO;
 import be.enigma.pieter.enigmapoef.models.Poef;
-import com.google.zxing.Result;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+
 import static android.Manifest.permission.CAMERA;
 import static be.enigma.pieter.enigmapoef.database.BaseDAO.getConnectie;
 
@@ -53,6 +59,17 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poef_toevoegen);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
+        // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar();
+
+        // Enable the Up button
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
 
         TextView textview = (TextView) findViewById(R.id.naamText);
 
@@ -115,7 +132,7 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
         textView.setGravity(Gravity.CENTER_HORIZONTAL);
         textView.setTextColor(Color.rgb(0,100,0));
         textView.setTextSize(25);
-        textView.setText("Bent u zeker dat u: €" + hoeveelheid + " aan uw poef wilt toevoegen?");
+        textView.setText("\n Bent u zeker dat u €" + hoeveelheid + " aan uw poef wilt toevoegen?");
 
         alert.setView(textView);
 
@@ -310,13 +327,79 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
 
 
 
-    //mail encoderen omdat "." niet toegestaan is in firebase
-    static String encodeUserEmail(String userEmail) {
-        return userEmail.replace(".", ",");
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
-    static String decodeUserEmail(String userEmail) {
-        return userEmail.replace(",", ".");
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.Toevoegen:
+                //Write your code
+                Log.wtf("test", "onOptionsItemSelected: toevoegen" );
+                intent = new Intent(this, PoefToevoegen.class);
+                startActivity(intent);
+
+
+                return true;
+            case R.id.Bekijken:
+                //Write your code
+                Log.wtf("test", "onOptionsItemSelected: bekijken" );
+                intent = new Intent(this, PoefBekijken.class);
+                startActivity(intent);
+
+
+                return true;
+            case R.id.Betalen:
+                //Write your code
+                Log.wtf("test", "onOptionsItemSelected: betalen" );
+                intent = new Intent(Intent.ACTION_SEND);
+
+
+                // Always use string resources for UI text.
+                // This says something like "Share this photo with"
+                String title = getResources().getString(R.string.app_name);
+                // Create intent to show chooser
+                Intent chooser = Intent.createChooser(intent, title);
+
+                // Verify the intent will resolve to at least one activity
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(chooser);
+                }
+
+
+                return true;
+            case R.id.Afmelden:
+                //Write your code
+                Log.wtf("test", "onOptionsItemSelected: afmelden" );
+
+                FirebaseAuth.getInstance().signOut();
+
+                GoogleSignInClient mGoogleSignInClient;
+
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build();
+
+                mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+                mGoogleSignInClient.signOut();
+                mGoogleSignInClient.revokeAccess();
+
+
+                intent = new Intent(this, MainActivity.class);
+
+                startActivity(intent);
+
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 

@@ -13,8 +13,7 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        tools:targetApi="lollipop" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
 
     <Button
@@ -24,7 +23,7 @@
         android:layout_marginBottom="24dp"
         android:background="@color/colorAccent"
         android:onClick="poefToevoegen"
-        android:text="@string/poef_toevoegen"
+        android:text="Poef Toevoegen"
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toTopOf="@+id/bekijkenButton"
         app:layout_constraintHorizontal_bias="0.0"
@@ -38,7 +37,7 @@
         android:layout_marginTop="56dp"
         android:background="@color/common_google_signin_btn_text_dark_focused"
         android:onClick="poefBekijken"
-        android:text="@string/poef_bekijken"
+        android:text="Poef Bekijken"
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -55,7 +54,7 @@
         android:layout_marginTop="24dp"
         android:background="@android:color/darker_gray"
         android:onClick="poefBetalen"
-        android:text="@string/poef_betalen"
+        android:text="Poef betalen"
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
