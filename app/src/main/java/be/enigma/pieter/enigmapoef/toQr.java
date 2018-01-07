@@ -21,7 +21,6 @@ public class toQr extends AppCompatActivity {
     Button backButton;
     TextView textView;
     String EditTextValue ;
-    Thread thread ;
     public final static int QRcodeWidth = 500 ;
     Bitmap bitmap ;
 

@@ -1,11 +1,8 @@
 package be.enigma.pieter.enigmapoef;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,42 +17,26 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.sql.Connection;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 
 import be.enigma.pieter.enigmapoef.database.DatabaseHelper;
 import be.enigma.pieter.enigmapoef.database.PoefDAO;
 import be.enigma.pieter.enigmapoef.models.Poef;
-import cz.msebera.android.httpclient.Header;
 
 import static be.enigma.pieter.enigmapoef.database.BaseDAO.getConnectie;
 
 public class PoefBekijken extends AppCompatActivity {
 
     private static final String TAG = "PoefBekijken =>";
-    private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
     DatabaseHelper mDatabaseHelper;
@@ -92,7 +73,6 @@ public class PoefBekijken extends AppCompatActivity {
         }
 
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
         //[Checken welke user aangemeld is]
@@ -229,7 +209,7 @@ public class PoefBekijken extends AppCompatActivity {
 
         Log.wtf(TAG, "populateListview: Totaal: " + totaalPoef);
 
-        totaalPoefText.setText("Totaal: €" + Float.toString(totaalPoef/2)); // omdat 2 keer toegevoegd in 2 verschillende databases is de totaalpoef dubbel zo hoog als moet
+        totaalPoefText.setText(getString(R.string.totaal_poef) + Float.toString(totaalPoef/2)); // omdat 2 keer toegevoegd in 2 verschillende databases is de totaalpoef dubbel zo hoog als moet
         progressBar.setVisibility(View.INVISIBLE);
     }
 

@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -56,11 +55,12 @@ public class Mainpage extends AppCompatActivity {
         textView.setGravity(Gravity.CENTER_HORIZONTAL);
         textView.setTextColor(Color.rgb(0,100,0));
         textView.setTextSize(25);
-        textView.setText("\n Om te betalen moet u de Bancontact app geïnstalleerd hebben");
+        textView.setText("\n" +
+                getString(R.string.om_te_betalen_bancontact));
 
         alert.setView(textView);
 
-        alert.setPositiveButton("Ik heb de Bancontact app", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(R.string.ik_heb_bancontact, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 Intent launchIntent = getPackageManager().getLaunchIntentForPackage("mobi.inthepocket.bcmc.bancontact");
@@ -71,7 +71,7 @@ public class Mainpage extends AppCompatActivity {
             }
         });
 
-        alert.setNegativeButton("Ik betaal cash", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(R.string.ik_betaal_cash, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 // Canceled.
             }
@@ -81,15 +81,6 @@ public class Mainpage extends AppCompatActivity {
 
 
     }
-
-
-
-    public void Test(View view) {
-
-        Intent intent = new Intent(this, Request.class);
-        startActivity(intent);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

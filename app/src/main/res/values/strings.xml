@@ -35,6 +35,23 @@
     <string name="toevoegen">Toevoegen</string>
     <string name="scannen">Scannen</string>
     <string name="qr">QR</string>
-    <string name="back">Back</string>
+    <string name="back">Terug</string>
+    <string name="gelieve_email_invullen">Gelieve een emailaddres in te geven.</string>
+    <string name="gelieve_wachtwoord_invullen">Gelieve een wachtwoord in te geven.</string>
+    <string name="gelieve_aanmeldingsgegevens_invullen">Gelieve de aanmeldingsgegevens in te vullen.</string>
+    <string name="aanmeldgegevens_kloppen_niet">De aanmeldingsgegevens kloppen niet.</string>
+    <string name="om_te_betalen_bancontact">Om te betalen moet u de Bancontact app geïnstalleerd hebben</string>
+    <string name="ik_heb_bancontact">Ik heb de Bancontact app</string>
+    <string name="ik_betaal_cash">Ik betaal cash</string>
+    <string name="totaal_poef">Totaal: €</string>
+    <string name="bent_u_zeker">Bent u zeker dat u €</string>
+    <string name="aan_poef_toevoegen">aan uw poef wilt toevoegen?</string>
+    <string name="ja">Ja</string>
+    <string name="nee">Nee</string>
+    <string name="camera_permissie">" U moet toegang tot beide machtigingen toestaan"</string>
+    <string name="ok">OK</string>
+    <string name="annuleer">Annuleer</string>
+    <string name="scan_result">Scan resultaat</string>
+    <string name="opnieuw">Opnieuw</string>
 
 </resources>

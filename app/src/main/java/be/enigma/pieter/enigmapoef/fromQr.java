@@ -1,10 +1,9 @@
 package be.enigma.pieter.enigmapoef;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -15,7 +14,6 @@ import be.enigma.pieter.enigmapoef.database.PoefDAO;
 import be.enigma.pieter.enigmapoef.models.Poef;
 
 import static be.enigma.pieter.enigmapoef.database.BaseDAO.getConnectie;
-import static be.enigma.pieter.enigmapoef.database.PoefDAO.getId;
 
 public class fromQr extends AppCompatActivity {
 
@@ -83,7 +81,7 @@ public class fromQr extends AppCompatActivity {
         redenDbText = findViewById(R.id.RedenDbText);
         tijdDbText = findViewById(R.id.TijdDbText);
 
-        mAsyncTask = new AsyncTask<String, String, String>() {
+       mAsyncTask = new AsyncTask<String, String, String>() {
 
 
             @Override

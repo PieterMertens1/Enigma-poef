@@ -1,22 +1,14 @@
 package be.enigma.pieter.enigmapoef;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -25,15 +17,9 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import be.enigma.pieter.enigmapoef.database.PoefDAO;
-
-import static be.enigma.pieter.enigmapoef.database.BaseDAO.getConnectie;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -181,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            Log.wtf(TAG, "signInResult:failed code=" + e.getStatusCode());
             updateUI(null);
         }
     }
@@ -200,15 +186,15 @@ public class MainActivity extends AppCompatActivity {
 
         if (email.isEmpty()) {
 
-            String error = "Gelieve een emailaddres in te geven.";
+            String error = getString(R.string.gelieve_email_invullen);
             errorText.setText(error);
         }
         else if(password.isEmpty()) {
-            String error = "Gelieve een wachtwoord in te geven.";
+            String error = getString(R.string.gelieve_wachtwoord_invullen);
             errorText.setText(error);
         }
         else if (email.isEmpty() || password.isEmpty()) {
-            String error  = "Gelieve de aanmeldingsgegevens in te vullen.";
+            String error  = getString(R.string.gelieve_aanmeldingsgegevens_invullen);
             errorText.setText(error);
         }
         else {
@@ -229,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
                                 TextView errorText = (TextView) findViewById(R.id.errorText);
-                                String error = "De aanmeldingsgegevens kloppen niet.";
+                                String error = getString(R.string.aanmeldgegevens_kloppen_niet);
                                 errorText.setText(error);
                             }
 
@@ -263,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // [START auth_with_facebook]
-    private void handleFacebookAccessToken(AccessToken token) {
+    /*private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
         // [START_EXCLUDE silent]
         //showProgressDialog();
@@ -291,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
                         // [END_EXCLUDE]
                     }
                 });
-    }
+    }*/
     // [END auth_with_facebook]
 
     private void updateUI(FirebaseUser user) {

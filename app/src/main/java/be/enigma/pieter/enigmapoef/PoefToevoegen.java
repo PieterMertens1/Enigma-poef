@@ -135,14 +135,15 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
         textView.setGravity(Gravity.CENTER_HORIZONTAL);
         textView.setTextColor(Color.rgb(0,100,0));
         textView.setTextSize(25);
-        textView.setText("\n Bent u zeker dat u €" + hoeveelheid + " aan uw poef wilt toevoegen?");
+        textView.setText("\n" +
+                getString(R.string.bent_u_zeker) + hoeveelheid + getString(R.string.aan_poef_toevoegen));
 
         alert.setView(textView);
 
         final String finalTijd = tijd;
 
 
-        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(R.string.ja, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 intent.putExtra("Gebruiker", gebruiker);
@@ -154,7 +155,7 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
             }
         });
 
-        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(R.string.nee, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 // Canceled.
             }
@@ -240,7 +241,7 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
                         Log.d(TAG, "onRequestPermissionsResult: Permission Denied, You cannot access and camera ");
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             if (shouldShowRequestPermissionRationale(CAMERA)) {
-                                showMessageOKCancel("You need to allow access to both the permissions",
+                                showMessageOKCancel(getString(R.string.camera_permissie),
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
@@ -260,10 +261,10 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new android.support.v7.app.AlertDialog.Builder(PoefToevoegen.this)
+        new AlertDialog.Builder(PoefToevoegen.this)
                 .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
+                .setPositiveButton(R.string.ok, okListener)
+                .setNegativeButton(R.string.annuleer, null)
                 .create()
                 .show();
     }
@@ -306,14 +307,14 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
 
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Scan Result");
-        builder.setPositiveButton("Opnieuw", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.scan_result);
+        builder.setPositiveButton(R.string.opnieuw, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                mScannerView.resumeCameraPreview(PoefToevoegen.this);
             }
         });
-        builder.setNeutralButton("Toevoegen", new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(getString(R.string.toevoegen), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

@@ -34,4 +34,21 @@
     <string name="scannen">Scan</string>
     <string name="qr">QR</string>
     <string name="back">Back</string>
+    <string name="gelieve_email_invullen">Please enter your email address.</string>
+    <string name="gelieve_wachtwoord_invullen">Please enter your password.</string>
+    <string name="gelieve_aanmeldingsgegevens_invullen">Please check your login credentials.</string>
+    <string name="aanmeldgegevens_kloppen_niet">Your logincredentials are not correct.</string>
+    <string name="ik_heb_bancontact">I have the Bancontact app</string>
+    <string name="ik_betaal_cash">I pay cash</string>
+    <string name="totaal_poef">Total: €</string>
+    <string name="bent_u_zeker">Are you sure that u want to add: €</string>
+    <string name="aan_poef_toevoegen">to your bill?</string>
+    <string name="ja">Yes</string>
+    <string name="nee">No</string>
+    <string name="camera_permissie">You need to allow access to both the permissions</string>
+    <string name="ok">OK</string>
+    <string name="annuleer">Cancel</string>
+    <string name="scan_result">Scan result</string>
+    <string name="opnieuw">Try again</string>
+    <string name="om_te_betalen_bancontact">" To pay, you must have the Bancontact app installed"</string>
 </resources>
