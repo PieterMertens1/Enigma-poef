@@ -24,7 +24,7 @@
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="379dp"
-        android:layout_below="@+id/button"
+        android:layout_below="@+id/BackButton"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -33,7 +33,8 @@
         app:layout_constraintBottom_toTopOf="@+id/BackButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/editText"
+        android:contentDescription="@string/qr" />
 
     <Button
         android:id="@+id/BackButton"
@@ -43,7 +44,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:onClick="Backbutton_onclick"
-        android:text="Back"
+        android:text="@string/back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"

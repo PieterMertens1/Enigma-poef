@@ -17,5 +17,24 @@
     <string name="facebook_application_id" translatable="false">200155947209616</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb200155947209616</string>
     <string name="button_SingIn">Aanmelden</string>
+    <string name="enter_your_email_addres">Voer hier je email adres in</string>
+    <string name="enter_your_password">Voer hier je paswoord in</string>
+    <string name="email">Email</string>
+    <string name="overzicht_van_aanvraag_tot_poef">Overzicht van aanvraag tot poef</string>
+    <string name="betaler">Betaler:</string>
+    <string name="tijd">Tijd</string>
+    <string name="accept">Accepteren</string>
+    <string name="decline">Weigeren</string>
+    <string name="gegevens_uit_qr_code">Gegevens uit QR code</string>
+    <string name="gegevens_uit_database">Gegevens uit database</string>
+    <string name="tijdd">Tijd:</string>
+    <string name="naam">Naam:</string>
+    <string name="bedrag">Bedrag:</string>
+    <string name="reden">Reden:</string>
+    <string name="euro">Euro</string>
+    <string name="toevoegen">Toevoegen</string>
+    <string name="scannen">Scannen</string>
+    <string name="qr">QR</string>
+    <string name="back">Back</string>
 
 </resources>

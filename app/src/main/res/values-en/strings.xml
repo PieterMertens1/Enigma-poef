@@ -13,4 +13,25 @@
     <string name="Enigmaschild">Enigmaschild</string>
     <string name="password">Password</string>
     <string name="button_SingIn">Sign in</string>
+    <string name="enter_your_email_addres">Enter your email addres</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="email">Email</string>
+    <string name="overzicht_van_aanvraag_tot_poef">" Overview of request to bill"</string>
+    <string name="betaler">Payer:</string>
+    <string name="bedrag">Amount:</string>
+    <string name="reden">Reason:</string>
+    <string name="tijd">Time</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="gegevens_uit_qr_code">Values from QR code</string>
+    <string name="gegevens_uit_database">Values from database</string>
+    <string name="tijdd">Time:</string>
+    <string name="naam">Name:</string>
+    <string name="bedrag">Am:</string>
+    <string name="reden">Reas:</string>
+    <string name="euro">Euro</string>
+    <string name="toevoegen">Add</string>
+    <string name="scannen">Scan</string>
+    <string name="qr">QR</string>
+    <string name="back">Back</string>
 </resources>

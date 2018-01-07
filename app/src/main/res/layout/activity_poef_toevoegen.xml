@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:text="Poef Toevoegen"
+        android:text="@string/poef_toevoegen"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/textView12"
@@ -37,7 +37,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="188dp"
-        android:text="Naam: "
+        android:text="@string/naam"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/textView11"
         app:layout_constraintHorizontal_bias="0.38"
@@ -68,7 +68,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:text="Bedrag: "
+        android:text="@string/bedrag"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/textView12"
         app:layout_constraintHorizontal_bias="0.0"
@@ -85,7 +85,8 @@
         android:ems="10"
         android:inputType="numberDecimal"
         app:layout_constraintStart_toEndOf="@+id/textView14"
-        app:layout_constraintTop_toBottomOf="@+id/naamText" />
+        app:layout_constraintTop_toBottomOf="@+id/naamText"
+        android:layout_marginLeft="12dp" />
 
     <TextView
         android:id="@+id/textView15"
@@ -93,10 +94,11 @@
         android:layout_height="25dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="32dp"
-        android:text="Reden: "
+        android:text="@string/reden"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        app:layout_constraintTop_toBottomOf="@+id/textView14"
+        android:layout_marginStart="16dp" />
 
     <EditText
         android:id="@+id/redenInput"
@@ -119,7 +121,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="240dp"
-        android:text="Euro"
+        android:text="@string/euro"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -133,9 +135,10 @@
         android:layout_marginBottom="16dp"
         android:layout_marginStart="56dp"
         android:onClick="poefToevoegen"
-        android:text="Toevoegen"
+        android:text="@string/toevoegen"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="56dp" />
 
     <TextView
         android:id="@+id/PoefText"
@@ -156,10 +159,11 @@
         android:layout_marginBottom="16dp"
         android:layout_marginStart="8dp"
         android:onClick="ScanQR"
-        android:text="Scannen"
+        android:text="@string/scannen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/toevoegenButton" />
+        app:layout_constraintStart_toEndOf="@+id/toevoegenButton"
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:id="@+id/ResultText"

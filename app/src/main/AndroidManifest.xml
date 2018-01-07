@@ -27,11 +27,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="be.enigma.pieter.enigmapoef.MainActivity" />
         </activity>
-        <activity android:name=".Request">
-            <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="be.enigma.pieter.enigmapoef.Mainpage"/>
-        </activity>
         <activity android:name=".Mainpage">
         </activity>
         <activity android:name=".PoefToevoegen">
