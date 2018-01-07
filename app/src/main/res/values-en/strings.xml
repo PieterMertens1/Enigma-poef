@@ -27,8 +27,6 @@
     <string name="gegevens_uit_database">Values from database</string>
     <string name="tijdd">Time:</string>
     <string name="naam">Name:</string>
-    <string name="bedrag">Am:</string>
-    <string name="reden">Reas:</string>
     <string name="euro">Euro</string>
     <string name="toevoegen">Add</string>
     <string name="scannen">Scan</string>
