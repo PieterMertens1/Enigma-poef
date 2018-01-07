@@ -1,5 +1,9 @@
 package be.enigma.pieter.enigmapoef;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -58,7 +62,6 @@ public class CreateNewAccount extends AppCompatActivity implements View.OnClickL
         passwordText = (EditText) findViewById(R.id.PasswordText);
 
         findViewById(R.id.btnSignIn).setOnClickListener( this);
-
     }
 
     @Override
@@ -100,6 +103,20 @@ public class CreateNewAccount extends AppCompatActivity implements View.OnClickL
                     }
                 });
         // [END create_user_with_email]
+
+        //--------------------------------------------notification---------------------------------------------
+        NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        String title = "Test";
+        String body = "Welkom op de Enigma Poef app!";
+        String subject = "Welkom!";
+        Notification notify=new Notification.Builder
+                (getApplicationContext()).setContentTitle(title).setContentText(body).
+                setContentTitle(subject).setSmallIcon(R.drawable.schild).build();
+
+        notify.flags |= Notification.FLAG_AUTO_CANCEL;
+        notif.notify(0, notify);
+        //--------------------------------------------notification---------------------------------------------
+
     }
 
 

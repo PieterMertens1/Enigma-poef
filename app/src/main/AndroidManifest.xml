@@ -43,13 +43,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="be.enigma.pieter.enigmapoef.Mainpage" />
         </activity>
+        <activity android:name=".fromQr" />
+
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider200155947209616"
             android:exported="true" />
 
-        <activity android:name=".fromQr"></activity>
+
     </application>
 
 </manifest>
