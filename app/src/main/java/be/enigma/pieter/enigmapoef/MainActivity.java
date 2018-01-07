@@ -2,6 +2,7 @@ package be.enigma.pieter.enigmapoef;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -28,6 +30,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import be.enigma.pieter.enigmapoef.database.PoefDAO;
+
+import static be.enigma.pieter.enigmapoef.database.BaseDAO.getConnectie;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     CallbackManager mCallbackManager;
     private int RC_SIGN_IN = 103;
+    FirebaseUser currentUser;
+    GoogleSignInAccount account;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +106,9 @@ public class MainActivity extends AppCompatActivity {
                 // [END_EXCLUDE]
             }
         });*/
+
+
+
     }
 
 /*    @Override
@@ -110,7 +122,10 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener myhandler1 = new View.OnClickListener() {
         public void onClick(View v) {
             // it was the 1st button
-            if (v.getId() == R.id.sign_in_button) {signInGoogle();}
+            if (v.getId() == R.id.sign_in_button) {
+                Log.wtf(TAG, "onClick: click on sign in with google");
+                signInGoogle();
+            }
         }
     };
 
@@ -119,13 +134,15 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+
         if (currentUser != null) {
+            Log.wtf(TAG, "updateUIFirebase");
             updateUIFirebase(currentUser);
         }
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
         if (account != null) {
+            Log.wtf(TAG, "updateUIGoogle");
             updateUIGoogle(account);
         }
     }
@@ -138,21 +155,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void signInGoogle() {
-
-
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        if (account == null) {
-         updateUI(null);
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
         }
-        else {
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            account = completedTask.getResult(ApiException.class);
+
+            // Signed in successfully, show authenticated UI.
             updateUIGoogle(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            updateUI(null);
         }
-
-
     }
 
 
@@ -210,9 +241,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUIFirebase(FirebaseUser currentUser) {
 
-            Intent intent = new Intent(this, Mainpage.class);
-            intent.putExtra("user", currentUser.toString());
-            startActivity(intent);
+        Log.wtf(TAG, "updateUIFirebase");
+        Intent intent = new Intent(this, Mainpage.class);
+        intent.putExtra("user", currentUser.toString());
+        startActivity(intent);
     }
 
     private void updateUIGoogle( GoogleSignInAccount account) {
@@ -220,11 +252,13 @@ public class MainActivity extends AppCompatActivity {
         //Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         //startActivityForResult(signInIntent, RC_SIGN_IN);
 
+        Log.wtf(TAG, "updateUIGoogle: start");
         Intent intent = new Intent(this, Mainpage.class);
 
         if (account.toString() != null) {
             intent.putExtra("user", account.toString());
         }
+        Log.wtf(TAG, "signInGoogle: RC_SIGN_IN:" + RC_SIGN_IN);
         startActivity(intent);
     }
 
@@ -242,12 +276,12 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
+                            Log.wtf(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Log.wtf(TAG, "signInWithCredential:failure", task.getException());
 
                             updateUI(null);
                         }
@@ -263,12 +297,13 @@ public class MainActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
 
         if (user != null) {
+            Log.wtf(TAG, "updateUI:user to mainpage");
             Intent intent = new Intent(this, Mainpage.class);
             intent.putExtra("user", user.toString());
             startActivity(intent);
         }
         else {
-            Log.d(TAG, "updateUI: UpdateUI niet gelukt");
+            Log.wtf(TAG, "updateUI: UpdateUI niet gelukt");
         }
 
     }
