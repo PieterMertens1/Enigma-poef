@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -35,10 +36,22 @@ public class CreateNewAccount extends AppCompatActivity implements View.OnClickL
     String email;
     String password;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_account);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
+        // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar();
+
+        // Enable the Up button
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -128,6 +141,81 @@ public class CreateNewAccount extends AppCompatActivity implements View.OnClickL
             Intent intent = new Intent(this, Mainpage.class);
             intent.putExtra("user", currentUser.toString());
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.Toevoegen:
+                //Write your code
+                Log.wtf("test", "onOptionsItemSelected: toevoegen" );
+                intent = new Intent(this, PoefToevoegen.class);
+                startActivity(intent);
+
+
+                return true;
+            case R.id.Bekijken:
+                //Write your code
+                Log.wtf("test", "onOptionsItemSelected: bekijken" );
+                intent = new Intent(this, PoefBekijken.class);
+                startActivity(intent);
+
+
+                return true;
+            case R.id.Betalen:
+                //Write your code
+                Log.wtf("test", "onOptionsItemSelected: betalen" );
+                intent = new Intent(Intent.ACTION_SEND);
+
+
+                // Always use string resources for UI text.
+                // This says something like "Share this photo with"
+                String title = getResources().getString(R.string.app_name);
+                // Create intent to show chooser
+                Intent chooser = Intent.createChooser(intent, title);
+
+                // Verify the intent will resolve to at least one activity
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(chooser);
+                }
+
+
+                return true;
+            case R.id.Afmelden:
+                //Write your code
+                Log.wtf("test", "onOptionsItemSelected: afmelden" );
+
+                FirebaseAuth.getInstance().signOut();
+
+                GoogleSignInClient mGoogleSignInClient;
+
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build();
+
+                mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+                mGoogleSignInClient.signOut();
+                mGoogleSignInClient.revokeAccess();
+
+
+                intent = new Intent(this, MainActivity.class);
+
+                startActivity(intent);
+
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

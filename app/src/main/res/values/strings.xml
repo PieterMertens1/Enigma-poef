@@ -1,23 +1,21 @@
 <resources>
     <string name="app_name">Enigma Poef</string>
-    <string name="hoeveelheid_poef">Geef de hoeveelheid toe te voegen poef en voorwat er gepoeft wordt in</string>
     <string name="button_send">Toevoegen aan poef</string>
     <string name="text_login">Log in</string>
-    <string name="text_Login_email_hint">Email address</string>
-    <string name="button_SingIn">Sign in</string>
-    <string name="button_CreateNewAccount">Create new account</string>
-    <string name="text_CreateNewAccount">Create a new account</string>
-
-    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
-    <string name="facebook_app_id" translatable="false">200155947209616</string>
-    <string name="facebook_application_id" translatable="false">200155947209616</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb200155947209616</string>
+    <string name="text_Login_email_hint">Emailadres</string>
+    <string name="button_CreateNewAccount">Creëer een nieuw account</string>
+    <string name="text_CreateNewAccount">Creëer een nieuw account</string>
     <string name="poef_bekijken">Poef bekijken</string>
     <string name="poef_toevoegen">Poef toevoegen</string>
     <string name="poef_betalen">Poef betalen</string>
     <string name="afmelden">Afmelden</string>
     <string name="Enigmaschild">Enigmaschild</string>
-    <string name="password">Password</string>
+    <string name="password">Paswoord</string>
 
+    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
+    <string name="facebook_app_id" translatable="false">200155947209616</string>
+    <string name="facebook_application_id" translatable="false">200155947209616</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb200155947209616</string>
+    <string name="button_SingIn">Aanmelden</string>
 
 </resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Enigma Poef</string>
+    <string name="button_send">Add to bill</string>
+    <string name="text_login">Log in</string>
+    <string name="text_Login_email_hint">Email address</string>
+    <string name="button_CreateNewAccount">Create a new account</string>
+    <string name="text_CreateNewAccount">Create a new account</string>
+    <string name="poef_bekijken">View bill</string>
+    <string name="poef_toevoegen">Add bill</string>
+    <string name="poef_betalen">Pay bill</string>
+    <string name="afmelden">Log out</string>
+    <string name="Enigmaschild">Enigmaschild</string>
+    <string name="password">Password</string>
+    <string name="button_SingIn">Sign in</string>
+</resources>

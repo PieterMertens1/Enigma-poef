@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String TABLE_NAME = "Poef";
+    public static final String TABLE_NAME = "Poef";
     private static final String COL0 = "ID";
     private static final String COL1 = "gebruiker";
     private static final String COL2 = "hoeveelheid";

@@ -111,13 +111,16 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
         final String reden = redenText.getText().toString();
         String tijd = "";
 
-        final Poef mijnPoefPoef = new Poef(gebruiker, hoeveelheid, reden, tijd);
-        tijd = mijnPoefPoef.getTijd();
+        if (gebruiker != null && hoeveelheid != "" && reden != "") {
+            final Poef mijnPoefPoef = new Poef(gebruiker, hoeveelheid, reden, tijd);
+            tijd = mijnPoefPoef.getTijd();
 
-        //to remote mysql database
-        addData(mijnPoefPoef);
-        //to local sqlite database
-        AddData(gebruiker, hoeveelheid, reden, tijd);
+            //to remote mysql database
+            addData(mijnPoefPoef);
+            //to local sqlite database
+            AddData(gebruiker, hoeveelheid, reden, tijd);
+        }
+
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -163,7 +166,7 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
 
     }
 
-    private void addData(final Poef poef) {
+    void addData(final Poef poef) {
 
         Log.wtf(TAG, "AddData: before");
 
@@ -296,8 +299,6 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
 
 
         final Intent intent = new Intent(this, fromQr.class);
-
-        TextView resultText = findViewById(R.id.ResultText);
 
         final String result = rawResult.getText();
         Log.d("QRCodeScanner", rawResult.getText());

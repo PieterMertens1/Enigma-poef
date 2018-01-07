@@ -154,11 +154,11 @@ public class PoefBekijken extends AppCompatActivity {
 
     }
 
-    private void populateListview() {
+    public void populateListview() {
         System.out.print(TAG + "populateListview displaying data in the listview");
 
 
-        Cursor data = mDatabaseHelper.getPoefByUser(textview.getText().toString());
+        Cursor data = mDatabaseHelper.getPoefByUser(user);
         mListView= findViewById(R.id.mListView);
 
         ArrayList<Poef> poeflijstSQLITE = new ArrayList<>();

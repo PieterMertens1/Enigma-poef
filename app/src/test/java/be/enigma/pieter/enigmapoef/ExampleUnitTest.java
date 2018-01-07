@@ -2,6 +2,7 @@ package be.enigma.pieter.enigmapoef;
 
 import org.junit.Test;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 /**
@@ -15,3 +16,4 @@ public class ExampleUnitTest {
         assertEquals(4, 2 + 2);
     }
 }
+
