@@ -3,7 +3,9 @@ Een app voor het bijhouden, toevoegen en weergeven van de "poef" van een lid
 
 ## Getting Started
 Installeer app-debug.apk
+
 Accepteer de gevraagde permissions (internet en camera)
+
 Start!
 
 ## Built With
