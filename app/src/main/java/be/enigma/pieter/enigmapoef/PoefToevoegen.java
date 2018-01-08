@@ -1,5 +1,8 @@
 package be.enigma.pieter.enigmapoef;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -196,6 +199,19 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
                 // Canceled.
             }
         });
+
+        //--------------------------------------------notification---------------------------------------------
+        NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        String title = getString(R.string.poef_toegevoegd);
+        String body = getString(R.string.u_hebt_net) + hoeveelheid + getString(R.string.aan_poef_toegevoegd);
+        String subject = getString(R.string.poef_toegevoegd);
+        Notification notify=new Notification.Builder
+                (getApplicationContext()).setContentTitle(title).setContentText(body).
+                setContentTitle(subject).setSmallIcon(R.drawable.schild).build();
+
+        notify.flags |= Notification.FLAG_AUTO_CANCEL;
+        notif.notify(0, notify);
+        //--------------------------------------------notification---------------------------------------------
 
         alert.show();
 

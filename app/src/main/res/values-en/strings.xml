@@ -49,4 +49,7 @@
     <string name="scan_result">Scan result</string>
     <string name="opnieuw">Try again</string>
     <string name="om_te_betalen_bancontact">" To pay, you must have the Bancontact app installed"</string>
+    <string name="poef_toegevoegd">Bill added</string>
+    <string name="u_hebt_net">You just added €</string>
+    <string name="aan_poef_toegevoegd">to your bill</string>
 </resources>

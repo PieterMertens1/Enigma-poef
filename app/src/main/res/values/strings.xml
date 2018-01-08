@@ -53,5 +53,8 @@
     <string name="annuleer">Annuleer</string>
     <string name="scan_result">Scan resultaat</string>
     <string name="opnieuw">Opnieuw</string>
+    <string name="poef_toegevoegd">Poef toegevoegd</string>
+    <string name="u_hebt_net">U hebt net €</string>
+    <string name="aan_poef_toegevoegd">aan uw poef toegevoegd</string>
 
 </resources>
