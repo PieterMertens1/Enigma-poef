@@ -21,7 +21,9 @@ Pieter Mertens
 
 ## Acknowledgments
 Hat tip to anyone who's code was used
+
 Inspiration
+
 etc
 
 ## Further questions
