@@ -6,6 +6,7 @@ Installeer app-debug.apk
 
 ## Built With
 Android Studio
+
 Gradle - Dependency Management
 
 ## Versioning
