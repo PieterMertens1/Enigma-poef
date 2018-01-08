@@ -160,10 +160,10 @@
         android:layout_marginStart="8dp"
         android:onClick="ScanQR"
         android:text="@string/scannen"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/toevoegenButton"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintStart_toEndOf="@+id/toevoegenButton" />
 
     <TextView
         android:id="@+id/ResultText"

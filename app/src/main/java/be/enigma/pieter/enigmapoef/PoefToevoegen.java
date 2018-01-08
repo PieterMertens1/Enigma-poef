@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ import com.google.zxing.Result;
 
 import be.enigma.pieter.enigmapoef.database.DatabaseHelper;
 import be.enigma.pieter.enigmapoef.database.PoefDAO;
+import be.enigma.pieter.enigmapoef.database.UserDAO;
 import be.enigma.pieter.enigmapoef.models.Poef;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -44,13 +46,17 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
     private FirebaseAuth mAuth;
 
     private static AsyncTask<String, String, String> mAsyncTask;
+    private static AsyncTask<String, String, String> mAsyncTask2;
+
 
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView mScannerView;
 
     private DatabaseHelper mDatabaseHelper;
+    private Button Scanbutton;
 
     String gebruiker;
+    int isBestuur = 0;
 
     private ProgressBar progressBar;
 
@@ -72,6 +78,7 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
         }
 
         TextView textview = (TextView) findViewById(R.id.naamText);
+        Scanbutton = findViewById(R.id.ScanButton);
 
 
         if (GoogleSignIn.getLastSignedInAccount(this) != null){
@@ -93,6 +100,35 @@ public class PoefToevoegen extends AppCompatActivity implements ZXingScannerView
 
         progressBar = findViewById(R.id.progressBar_cyclic);
         progressBar.setIndeterminate(true);
+
+
+        mAsyncTask2 = new AsyncTask<String, String, String>() {
+            @Override
+            protected String doInBackground(String... strings) {
+                UserDAO userDAO = new UserDAO();
+
+                if (getConnectie() != null) {
+                    isBestuur = userDAO.checkIfBestuur(gebruiker);
+
+                    Log.wtf(TAG, "doInBackground: Succes!");
+                } else {
+                    Log.wtf(TAG, "doInBackground: Connection is null");
+
+                }
+                return null;
+            }
+            @Override
+            protected void onPostExecute(String result) {
+                Log.wtf(TAG, "Poeftoevoegen: scanbutton zichtbaar maken" );
+
+                if (isBestuur == 1) {
+                    Scanbutton.setVisibility(View.VISIBLE);
+                }
+            }
+        };
+
+        mAsyncTask2.execute("");
+
 
 
     }
